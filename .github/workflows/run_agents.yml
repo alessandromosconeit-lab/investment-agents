@@ -1,16 +1,13 @@
-name: Investment Agents — Bisettimanale
+name: Investment Agents Bisettimanale
 
 on:
-  # Lunedì e Giovedì alle 06:00 UTC = 07:00 CET (08:00 CEST in estate)
   schedule:
-    - cron: "0 6 * * 1"   # Lunedì
-    - cron: "0 6 * * 4"   # Giovedì
-
-  # Esecuzione manuale dalla tab Actions su GitHub
+    - cron: "0 6 * * 1"
+    - cron: "0 6 * * 4"
   workflow_dispatch:
     inputs:
       agent:
-        description: "Agente da eseguire (lascia vuoto per tutti)"
+        description: "Agente da eseguire"
         required: false
         default: ""
         type: choice
@@ -20,63 +17,35 @@ on:
           - growth
           - quality
       dry_run:
-        description: "Dry run — genera report senza inviare email"
+        description: "Dry run"
         required: false
         default: false
         type: boolean
 
 jobs:
   run-agents:
-    name: Esegui Investment Agents
     runs-on: ubuntu-latest
-    timeout-minutes: 120   # max 2 ore per fetch + analisi dell'intero universo
-
+    timeout-minutes: 120
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-
-      - name: Installa dipendenze
-        run: pip install -r requirements.txt
-
-      - name: Esegui Investment Agents
-        env:
-          FMP_API_KEY:        ${{ secrets.FMP_API_KEY }}
-          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
-          GMAIL_USER:         ${{ secrets.GMAIL_USER }}
+      - run: pip install -r requirements.txt
+      - env:
+          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-      env:
-          FMP_API_KEY:        ${{ secrets.FMP_API_KEY }}
-          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
-          GMAIL_USER:         ${{ secrets.GMAIL_USER }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          PYTHONHTTPSVERIFY:  "0"
+          PYTHONHTTPSVERIFY: "0"
         run: |
           AGENT_ARG=""
           DRY_RUN_ARG=""
-
-          # Agente specifico (solo per workflow_dispatch)
           if [ -n "${{ github.event.inputs.agent }}" ]; then
             AGENT_ARG="--agent ${{ github.event.inputs.agent }}"
           fi
-
-          # Dry run (solo per workflow_dispatch)
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             DRY_RUN_ARG="--dry-run"
           fi
-
           python main.py $AGENT_ARG $DRY_RUN_ARG
-
-      - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: agent-logs-${{ github.run_id }}
-          path: "*.log"
-          retention-days: 7
-          if-no-files-found: ignore
