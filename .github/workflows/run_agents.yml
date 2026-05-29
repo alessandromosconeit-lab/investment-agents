@@ -32,22 +32,18 @@ jobs:
     timeout-minutes: 120   # max 2 ore per fetch + analisi dell'intero universo
 
     steps:
-      # 1. Checkout del repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Python 3.11
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
-      # 3. Installa dipendenze
       - name: Installa dipendenze
         run: pip install -r requirements.txt
 
-      # 4. Esegui gli agenti
       - name: Esegui Investment Agents
         env:
           FMP_API_KEY:        ${{ secrets.FMP_API_KEY }}
@@ -76,7 +72,6 @@ jobs:
 
           python main.py $AGENT_ARG $DRY_RUN_ARG
 
-      # 5. Upload log come artefatto (utile per debug)
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
