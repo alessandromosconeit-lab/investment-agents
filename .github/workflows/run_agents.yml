@@ -22,18 +22,27 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   run-agents:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
+
       - run: pip install -r requirements.txt
-      - env:
+
+      - name: Esegui agenti
+        env:
           FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
@@ -49,3 +58,11 @@ jobs:
             DRY_RUN_ARG="--dry-run"
           fi
           python main.py $AGENT_ARG $DRY_RUN_ARG
+
+      - name: Commit dati dashboard
+        run: |
+          git config user.name  "Investment Agents Bot"
+          git config user.email "bot@investment-agents"
+          git add data/ || true
+          git diff --staged --quiet || git commit -m "Update dashboard data $(date +%Y-%m-%d)"
+          git push || true

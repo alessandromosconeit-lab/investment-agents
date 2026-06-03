@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Agent Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --bg2:      #161b22;
+    --bg3:      #21262d;
+    --border:   #30363d;
+    --text:     #e6edf3;
+    --muted:    #7d8590;
+    --blue:     #58a6ff;
+    --green:    #3fb950;
+    --red:      #f85149;
+    --yellow:   #d29922;
+    --purple:   #bc8cff;
+    --orange:   #ffa657;
+    --value:    #58a6ff;
+    --growth:   #3fb950;
+    --quality:  #d29922;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text);
+         font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; }
+
+  /* TOP BAR */
+  .topbar { background: var(--bg2); border-bottom: 1px solid var(--border);
+            padding: 10px 24px; display: flex; align-items: center;
+            justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .logo { color: var(--orange); font-weight: 700; font-size: 15px; letter-spacing: 1px; }
+  .tagline { color: var(--muted); font-size: 11px; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .last-update { color: var(--muted); font-size: 11px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%;
+                background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* LAYOUT */
+  .container { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
+
+  /* AGENT TABS */
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .tab { padding: 8px 20px; cursor: pointer; border-radius: 6px 6px 0 0;
+         color: var(--muted); font-size: 12px; font-weight: 600;
+         letter-spacing: .5px; transition: all .2s; border: 1px solid transparent;
+         border-bottom: none; margin-bottom: -1px; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-color: var(--border);
+                background: var(--bg2); }
+  .tab.value  { --tc: var(--value); }
+  .tab.growth { --tc: var(--growth); }
+  .tab.quality{ --tc: var(--quality); }
+  .tab.active { border-top: 2px solid var(--tc, var(--blue)); }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* STATS ROW */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: var(--bg2); border: 1px solid var(--border);
+               border-radius: 8px; padding: 16px; }
+  .stat-label { color: var(--muted); font-size: 10px; text-transform: uppercase;
+                letter-spacing: 1px; margin-bottom: 6px; }
+  .stat-value { font-size: 22px; font-weight: 700; }
+  .stat-sub   { color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+
+  /* CARD */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .card-header { padding: 12px 16px; border-bottom: 1px solid var(--border);
+                 display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 11px; font-weight: 700; text-transform: uppercase;
+                letter-spacing: 1px; color: var(--muted); }
+  .card-body  { padding: 0; }
+
+  /* TICKER TABLE */
+  .ticker-table { width: 100%; border-collapse: collapse; }
+  .ticker-table th { padding: 8px 12px; text-align: left; font-size: 10px;
+                     text-transform: uppercase; letter-spacing: .8px;
+                     color: var(--muted); border-bottom: 1px solid var(--border);
+                     background: var(--bg3); }
+  .ticker-table td { padding: 10px 12px; border-bottom: 1px solid var(--border);
+                     font-size: 12px; vertical-align: middle; }
+  .ticker-table tr:last-child td { border-bottom: none; }
+  .ticker-table tr:hover td { background: var(--bg3); cursor: pointer; }
+
+  .ticker-sym  { font-weight: 700; color: var(--blue); font-size: 13px; }
+  .ticker-name { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 4px;
+           font-size: 10px; font-weight: 600; }
+  .badge-green  { background: rgba(63,185,80,.15); color: var(--green); }
+  .badge-yellow { background: rgba(210,153,34,.15); color: var(--yellow); }
+  .badge-blue   { background: rgba(88,166,255,.15); color: var(--blue); }
+  .badge-red    { background: rgba(248,81,73,.15);  color: var(--red); }
+
+  .num-pos { color: var(--green); }
+  .num-neg { color: var(--red); }
+  .num-neu { color: var(--muted); }
+
+  /* CHART */
+  .chart-wrap { padding: 16px; height: 260px; position: relative; }
+
+  /* REPORT TEXT */
+  .report-text { padding: 16px; color: var(--text); line-height: 1.7;
+                 font-family: -apple-system, sans-serif; font-size: 13px;
+                 max-height: 400px; overflow-y: auto; white-space: pre-wrap; }
+
+  /* HISTORY */
+  .history-list { padding: 8px 0; }
+  .history-item { padding: 10px 16px; border-bottom: 1px solid var(--border);
+                  display: flex; align-items: center; justify-content: space-between;
+                  cursor: pointer; transition: background .15s; }
+  .history-item:hover { background: var(--bg3); }
+  .history-item:last-child { border-bottom: none; }
+  .history-date  { color: var(--text); font-weight: 600; }
+  .history-agent { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* WATCHLIST */
+  .alert-badge { background: rgba(248,81,73,.2); color: var(--red);
+                 padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+
+  /* LOADING */
+  .loading { display: flex; align-items: center; justify-content: center;
+             padding: 60px; color: var(--muted); flex-direction: column; gap: 12px; }
+  .spinner { width: 24px; height: 24px; border: 2px solid var(--border);
+             border-top-color: var(--blue); border-radius: 50%;
+             animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESPONSIVE */
+  @media(max-width:900px) {
+    .grid-2,.grid-3,.stats-row { grid-template-columns: 1fr; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="logo">⚡ INVESTMENT AGENTS</span>
+    <span class="tagline">Value · Growth · Quality — Bisettimanale</span>
+  </div>
+  <div class="topbar-right">
+    <span class="last-update" id="last-update">Caricamento...</span>
+    <div class="status-dot"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab value  active" onclick="switchTab('value')">🔵 VALUE</div>
+    <div class="tab growth"        onclick="switchTab('growth')">🟢 GROWTH</div>
+    <div class="tab quality"       onclick="switchTab('quality')">🟡 QUALITY</div>
+    <div class="tab" style="margin-left:auto" onclick="switchTab('history')">📋 STORICO</div>
+  </div>
+
+  <!-- VALUE SECTION -->
+  <div class="section active" id="section-value">
+    <div id="content-value"><div class="loading"><div class="spinner"></div><span>Caricamento Value Agent...</span></div></div>
+  </div>
+
+  <!-- GROWTH SECTION -->
+  <div class="section" id="section-growth">
+    <div id="content-growth"><div class="loading"><div class="spinner"></div><span>Caricamento Growth Agent...</span></div></div>
+  </div>
+
+  <!-- QUALITY SECTION -->
+  <div class="section" id="section-quality">
+    <div id="content-quality"><div class="loading"><div class="spinner"></div><span>Caricamento Quality Agent...</span></div></div>
+  </div>
+
+  <!-- HISTORY SECTION -->
+  <div class="section" id="section-history">
+    <div id="content-history"><div class="loading"><div class="spinner"></div><span>Caricamento storico...</span></div></div>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG — modifica con il tuo username GitHub ──────────────────────────────
+const GITHUB_USER = "alessandromosconeit-lab";
+const GITHUB_REPO = "investment-agents";
+const BRANCH      = "main";
+const BASE_URL    = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${BRANCH}`;
+
+// ── State ─────────────────────────────────────────────────────────────────────
+const cache = {};
+let charts  = {};
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelector(`.tab.${name}`) && document.querySelector(`.tab.${name}`).classList.add("active");
+  if (!document.querySelector(`.tab.${name}`)) {
+    // history tab
+    document.querySelectorAll(".tab")[3].classList.add("active");
+  }
+  document.getElementById(`section-${name}`).classList.add("active");
+  loadSection(name);
+}
+
+// ── Data loading ──────────────────────────────────────────────────────────────
+async function fetchJSON(url) {
+  if (cache[url]) return cache[url];
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  const data = await r.json();
+  cache[url] = data;
+  return data;
+}
+
+async function loadSection(name) {
+  if (name === "history") { loadHistory(); return; }
+  try {
+    const data = await fetchJSON(`${BASE_URL}/data/latest/${name}.json`);
+    renderAgent(name, data);
+  } catch(e) {
+    document.getElementById(`content-${name}`).innerHTML =
+      `<div class="loading"><span>Nessun dato disponibile — esegui prima un run.</span></div>`;
+  }
+}
+
+async function loadHistory() {
+  try {
+    const index = await fetchJSON(`${BASE_URL}/data/index.json`);
+    renderHistory(index);
+  } catch(e) {
+    document.getElementById("content-history").innerHTML =
+      `<div class="loading"><span>Storico non disponibile.</span></div>`;
+  }
+}
+
+// ── Formatters ────────────────────────────────────────────────────────────────
+const fmt = (v, dec=2) => v != null ? Number(v).toFixed(dec) : "—";
+const fmtPct = v => v != null ? (v*100).toFixed(1)+"%" : "—";
+const fmtM = v => {
+  if (!v) return "—";
+  if (v >= 1e12) return (v/1e12).toFixed(1)+"T";
+  if (v >= 1e9)  return (v/1e9).toFixed(1)+"B";
+  if (v >= 1e6)  return (v/1e6).toFixed(1)+"M";
+  return v.toFixed(0);
+};
+const colorNum = (v, inv=false) => {
+  if (v == null) return "num-neu";
+  if (inv) return v > 0 ? "num-neg" : "num-pos";
+  return v > 0 ? "num-pos" : v < 0 ? "num-neg" : "num-neu";
+};
+const agentColor = a => a==="value" ? "var(--value)" : a==="growth" ? "var(--growth)" : "var(--quality)";
+
+// ── Render agent section ──────────────────────────────────────────────────────
+function renderAgent(agent, data) {
+  const color = agentColor(agent);
+  const stocks = data.top_stocks || [];
+  const etfs   = data.top_etf    || [];
+
+  // Update last update
+  document.getElementById("last-update").textContent =
+    `Ultimo aggiornamento: ${data.date || "—"}`;
+
+  // Stats
+  const statsHTML = `
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Candidati analizzati</div>
+        <div class="stat-value" style="color:${color}">${data.stats?.total_candidates || "—"}</div>
+        <div class="stat-sub">azioni screened</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Top Picks Azioni</div>
+        <div class="stat-value" style="color:${color}">${stocks.length}</div>
+        <div class="stat-sub">selezionate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Top Picks ETF</div>
+        <div class="stat-value" style="color:${color}">${etfs.length}</div>
+        <div class="stat-sub">selezionati</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Data report</div>
+        <div class="stat-value" style="font-size:16px;color:${color}">${data.date || "—"}</div>
+        <div class="stat-sub">${agent.toUpperCase()} Agent</div>
+      </div>
+    </div>`;
+
+  // Stocks table
+  const stockRows = stocks.map(s => `
+    <tr>
+      <td>
+        <div class="ticker-sym">${s.ticker}</div>
+        <div class="ticker-name">${(s.name||"").substring(0,28)}</div>
+      </td>
+      <td><span class="badge badge-blue">${s.sector||"—"}</span></td>
+      <td>${s.country||"—"}</td>
+      <td class="${colorNum(s.pe_ratio)}">${fmt(s.pe_ratio,1)}</td>
+      <td class="${colorNum(s.pb_ratio)}">${fmt(s.pb_ratio,2)}</td>
+      <td class="${colorNum(s.roe)}">${fmtPct(s.roe)}</td>
+      <td class="${colorNum(s.revenue_growth_1y)}">${fmtPct(s.revenue_growth_1y)}</td>
+      <td class="${colorNum(s.debt_equity, true)}">${fmt(s.debt_equity,2)}</td>
+      <td>${fmtM(s.market_cap)}</td>
+      <td><span class="badge ${s.earnings_positive ? 'badge-green':'badge-red'}">${s.earnings_positive?'✓ PROFIT':'✗ LOSS'}</span></td>
+    </tr>`).join("");
+
+  const stocksHTML = `
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title" style="color:${color}">📈 Top Picks — Azioni</span>
+        <span class="badge badge-blue">${stocks.length} selezionate</span>
+      </div>
+      <div class="card-body">
+        <table class="ticker-table">
+          <thead><tr>
+            <th>Ticker</th><th>Settore</th><th>Paese</th>
+            <th>P/E</th><th>P/B</th><th>ROE</th>
+            <th>Rev Growth</th><th>D/E</th><th>Mkt Cap</th><th>Utile</th>
+          </tr></thead>
+          <tbody>${stockRows || '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:20px">Nessun dato disponibile</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  // ETF table
+  const etfRows = etfs.map(e => `
+    <tr>
+      <td><div class="ticker-sym">${e.ticker}</div><div class="ticker-name">${(e.name||"").substring(0,30)}</div></td>
+      <td>${e.category||"—"}</td>
+      <td>${fmtM(e.total_assets)}</td>
+      <td class="${colorNum(e.return_1y)}">${fmtPct(e.return_1y)}</td>
+      <td>${e.expense_ratio ? (e.expense_ratio*100).toFixed(2)+"%" : "—"}</td>
+    </tr>`).join("");
+
+  const etfHTML = `
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title" style="color:${color}">🧩 Top Picks — ETF</span>
+        <span class="badge badge-green">${etfs.length} selezionati</span>
+      </div>
+      <div class="card-body">
+        <table class="ticker-table">
+          <thead><tr><th>Ticker</th><th>Categoria</th><th>AUM</th><th>Rend. 1Y</th><th>TER</th></tr></thead>
+          <tbody>${etfRows || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">Nessun dato</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  // Chart — P/E dei top picks
+  const chartId = `chart-${agent}`;
+  const chartHTML = `
+    <div class="card">
+      <div class="card-header"><span class="card-title" style="color:${color}">📊 Metriche Top Picks</span></div>
+      <div class="chart-wrap"><canvas id="${chartId}"></canvas></div>
+    </div>`;
+
+  // Report text
+  const reportHTML = `
+    <div class="card">
+      <div class="card-header"><span class="card-title" style="color:${color}">📄 Report Completo</span></div>
+      <div class="report-text">${data.report_text || "Report non disponibile"}</div>
+    </div>`;
+
+  document.getElementById(`content-${agent}`).innerHTML =
+    statsHTML +
+    stocksHTML +
+    `<div class="grid-2">${chartHTML}${etfHTML}</div>` +
+    reportHTML;
+
+  // Render chart
+  setTimeout(() => renderChart(chartId, stocks, color), 100);
+}
+
+function renderChart(id, stocks, color) {
+  if (charts[id]) { charts[id].destroy(); }
+  const ctx = document.getElementById(id);
+  if (!ctx || !stocks.length) return;
+
+  const labels  = stocks.map(s => s.ticker);
+  const peData  = stocks.map(s => s.pe_ratio  || 0);
+  const roeData = stocks.map(s => s.roe ? s.roe*100 : 0);
+
+  charts[id] = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        { label: "P/E Ratio",  data: peData,  backgroundColor: color+"88",       borderColor: color,           borderWidth: 1, yAxisID: "y" },
+        { label: "ROE (%)",    data: roeData, backgroundColor: "var(--purple)88", borderColor: "var(--purple)", borderWidth: 1, yAxisID: "y1" },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: "#7d8590", font: { size: 11 } } } },
+      scales: {
+        x:  { ticks: { color: "#7d8590" }, grid: { color: "#21262d" } },
+        y:  { ticks: { color: "#7d8590" }, grid: { color: "#21262d" }, position: "left",  title: { display:true, text:"P/E",   color:"#7d8590" } },
+        y1: { ticks: { color: "#7d8590" }, grid: { display:false },    position: "right", title: { display:true, text:"ROE %", color:"#7d8590" } },
+      }
+    }
+  });
+}
+
+// ── Render history ────────────────────────────────────────────────────────────
+function renderHistory(index) {
+  const reports = index.reports || [];
+  if (!reports.length) {
+    document.getElementById("content-history").innerHTML =
+      `<div class="loading"><span>Nessun report nello storico.</span></div>`;
+    return;
+  }
+
+  const agentEmoji = { value: "🔵", growth: "🟢", quality: "🟡" };
+  const agentColor = { value: "var(--value)", growth: "var(--growth)", quality: "var(--quality)" };
+
+  // Raggruppa per data
+  const byDate = {};
+  reports.forEach(r => {
+    if (!byDate[r.date]) byDate[r.date] = [];
+    byDate[r.date].push(r);
+  });
+
+  const rows = Object.entries(byDate).map(([date, items]) => `
+    <div style="margin-bottom:16px">
+      <div style="color:var(--muted);font-size:10px;text-transform:uppercase;
+                  letter-spacing:1px;padding:8px 16px;background:var(--bg3);
+                  border-bottom:1px solid var(--border)">${date}</div>
+      ${items.map(r => `
+        <div class="history-item" onclick="loadHistoricReport('${r.path}','${r.agent}')">
+          <div>
+            <div class="history-date">${agentEmoji[r.agent]||"📋"} ${r.agent.toUpperCase()} Agent</div>
+            <div class="history-agent">Report del ${r.date}</div>
+          </div>
+          <span class="badge" style="background:${agentColor[r.agent]}22;color:${agentColor[r.agent]}">Visualizza →</span>
+        </div>`).join("")}
+    </div>`).join("");
+
+  document.getElementById("content-history").innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📋 Storico Report</span>
+        <span class="badge badge-blue">${reports.length} report</span>
+      </div>
+      <div class="history-list">${rows}</div>
+    </div>`;
+}
+
+async function loadHistoricReport(path, agent) {
+  try {
+    const data = await fetchJSON(`${BASE_URL}/${path}`);
+    // Switch to agent tab and render
+    switchTab(agent);
+    renderAgent(agent, data);
+    window.scrollTo(0, 0);
+  } catch(e) {
+    alert("Impossibile caricare il report.");
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadSection("value");
+</script>
+</body>
+</html>

@@ -25,6 +25,7 @@ from data_fetcher  import (get_us_stock_universe, get_european_stock_universe,
 from screeners     import screen_value, screen_growth, screen_quality, screen_etf
 from claude_analyzer import generate_report
 from email_sender    import send_report
+from data_exporter   import save_report_data
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 
@@ -141,6 +142,9 @@ def run_agent(agent_type: str,
     top_pick_tickers = [c["ticker"] for c in stock_candidates[:config.MAX_TOP_PICKS_STOCKS]]
 
     # Output
+    # Salva dati per la dashboard
+    save_report_data(agent_type, stock_candidates[:5], etf_candidates[:3], report_text)
+
     if dry_run:
         logger.info(f"\n[DRY RUN] Report {agent_type}:\n{report_text[:500]}...\n")
     else:
@@ -157,7 +161,10 @@ def main(agent_filter: str | None = None, dry_run: bool = False):
     logger.info(f"\n🚀 Investment Agent System — {date.today()}")
     logger.info(f"   Agenti: {agent_filter or 'tutti'} | Dry run: {dry_run}\n")
 
-# Controlla API keys
+    # Controlla API keys
+    if not config.FMP_API_KEY:
+        logger.error("FMP_API_KEY non configurata. Imposta la variabile d'ambiente.")
+        sys.exit(1)
     if not config.ANTHROPIC_API_KEY:
         logger.error("ANTHROPIC_API_KEY non configurata.")
         sys.exit(1)
