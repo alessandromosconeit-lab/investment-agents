@@ -30,8 +30,8 @@ SEC_TICKERS     = "https://www.sec.gov/files/company_tickers.json"
 SEC_SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik}.json"
 SEC_ARCHIVES    = "https://www.sec.gov/Archives/edgar/data"
 USER_AGENT      = "InvestmentAgents contact@investment-agents.com"
-MIN_VALUE_USD   = 100_000
-MIN_VALUE_EUR   = 100_000
+MIN_VALUE_USD   = 40_000
+MIN_VALUE_EUR   = 40_000
 DELAY           = 0.12
 
 BUY_CODES  = {"P"}
