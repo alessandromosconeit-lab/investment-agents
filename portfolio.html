@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Dashboard — ISP + UCG</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bd:#30363d;
+  --tx:#e6edf3;--mu:#7d8590;
+  --gr:#3fb950;--rd:#f85149;--bl:#58a6ff;--yl:#d29922;--or:#ffa657;--pu:#bc8cff;
+  --isp:#58a6ff;--ucg:#3fb950;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--bd);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{color:var(--or);font-weight:700;font-size:15px;letter-spacing:1px}
+.back-link{color:var(--bl);text-decoration:none;font-size:12px}
+.back-link:hover{text-decoration:underline}
+.last-upd{color:var(--mu);font-size:11px}
+
+/* LAYOUT */
+.container{padding:20px 24px;max-width:1600px;margin:0 auto}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--bd)}
+.tab{padding:8px 18px;cursor:pointer;border-radius:6px 6px 0 0;color:var(--mu);
+  font-size:12px;font-weight:600;letter-spacing:.5px;border:1px solid transparent;
+  border-bottom:none;margin-bottom:-1px;transition:all .2s}
+.tab:hover{color:var(--tx)}
+.tab.active{color:var(--tx);border-color:var(--bd);background:var(--bg2);border-top:2px solid var(--bl)}
+.section{display:none}.section.active{display:block}
+
+/* CARDS */
+.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:16px}
+.card-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:6px}
+.card-value{font-size:20px;font-weight:700}
+.card-sub{font-size:11px;color:var(--mu);margin-top:4px}
+.card.isp{border-top:2px solid var(--isp)}
+.card.ucg{border-top:2px solid var(--ucg)}
+.card.total{border-top:2px solid var(--or)}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* BOX */
+.box{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.box-header{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.box-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu)}
+.box-body{padding:0}
+.chart-wrap{padding:16px;height:260px;position:relative}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;
+  letter-spacing:.8px;color:var(--mu);border-bottom:1px solid var(--bd);background:var(--bg3);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--bd);font-size:12px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3);cursor:pointer}
+.ticker-sym{font-weight:700;color:var(--bl);font-size:13px;font-family:monospace}
+.ticker-name{color:var(--mu);font-size:11px;margin-top:1px}
+.ptf-badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700}
+.ptf-isp{background:rgba(88,166,255,.15);color:var(--isp)}
+.ptf-ucg{background:rgba(63,185,80,.15);color:var(--ucg)}
+.pos{color:var(--gr)}.neg{color:var(--rd)}.neu{color:var(--mu)}
+
+/* SEMAPHORE */
+.flag-pp{color:#f85149;font-weight:700}
+.flag-p{color:#ffa657;font-weight:600}
+.flag-m{color:#7d8590}
+.flag-mm{color:#3fb950;font-weight:700}
+
+/* BOND */
+.bond-row{background:rgba(88,166,255,.04)}
+.ytm-high{color:var(--rd)}
+.ytm-mid{color:var(--yl)}
+.ytm-low{color:var(--gr)}
+.plneg{color:var(--rd)}.plpos{color:var(--gr)}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:60px;color:var(--mu);gap:12px}
+.spinner{width:20px;height:20px;border:2px solid var(--bd);border-top-color:var(--bl);
+  border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.filter-btn{padding:4px 12px;border-radius:12px;border:1px solid var(--bd);background:transparent;
+  color:var(--mu);cursor:pointer;font-size:12px;transition:all .15s}
+.filter-btn:hover{border-color:var(--bl);color:var(--bl)}
+.filter-btn.active{background:rgba(88,166,255,.15);border-color:var(--bl);color:var(--bl)}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:20px">
+    <span class="logo">📊 PORTFOLIO DASHBOARD</span>
+    <a href="dashboard.html" class="back-link">← Investment Agents</a>
+  </div>
+  <span class="last-upd" id="lastUpd">Caricamento prezzi live...</span>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('overview')">📈 Overview</div>
+    <div class="tab" onclick="switchTab('holdings')">💼 Posizioni</div>
+    <div class="tab" onclick="switchTab('multipli')">🔢 Multipli</div>
+    <div class="tab" onclick="switchTab('bonds')">💰 Obbligazioni</div>
+  </div>
+
+  <div class="section active" id="section-overview">
+    <div id="overview-content"><div class="loading"><div class="spinner"></div>Caricamento...</div></div>
+  </div>
+  <div class="section" id="section-holdings">
+    <div id="holdings-content"><div class="loading"><div class="spinner"></div>Caricamento...</div></div>
+  </div>
+  <div class="section" id="section-multipli">
+    <div id="multipli-content"></div>
+  </div>
+  <div class="section" id="section-bonds">
+    <div id="bonds-content"></div>
+  </div>
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────────
+const GITHUB_USER = "alessandromosconeit-lab";
+const GITHUB_REPO = "investment-agents";
+const BASE_URL    = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main`;
+
+// ── Static portfolio data ─────────────────────────────────────────────────────
+const ISP_EQUITY = [
+  {id:"SL_ISP",   ticker:"SL.MI",    name:"Sanlorenzo",        qty:5000,  refValue:180900.00, sector:"Luxury / Nautica",          ptf:"ISP"},
+  {id:"SPM_ISP",  ticker:"SPM.MI",   name:"Saipem",            qty:33350, refValue:144338.80, sector:"Oil & Gas Services",         ptf:"ISP"},
+  {id:"NVDA_ISP", ticker:"NVDA",     name:"NVIDIA",            qty:670,   refValue:114010.21, sector:"Semiconduttori / AI",         ptf:"ISP"},
+  {id:"AGS_ISP",  ticker:"AGS.BR",   name:"Ageas",             qty:1200,  refValue:84660.00,  sector:"Assicurazioni",              ptf:"ISP"},
+  {id:"RACE1_ISP",ticker:"RACE.MI",  name:"Ferrari (lotto 1)", qty:250,   refValue:83325.00,  sector:"Luxury Vehicles",            ptf:"ISP"},
+  {id:"AMZN_ISP", ticker:"AMZN",     name:"Amazon",            qty:300,   refValue:63584.38,  sector:"E-commerce / Cloud",         ptf:"ISP"},
+  {id:"AAPL_ISP", ticker:"AAPL",     name:"Apple",             qty:150,   refValue:40433.61,  sector:"Consumer Tech",              ptf:"ISP"},
+  {id:"ASML_ISP", ticker:"ASML.AS",  name:"ASML",              qty:25,    refValue:40370.00,  sector:"Semicond. Equipment",        ptf:"ISP"},
+  {id:"RACE2_ISP",ticker:"RACE.MI",  name:"Ferrari (lotto 2)", qty:110,   refValue:36985.60,  sector:"Luxury Vehicles",            ptf:"ISP"},
+  {id:"TIT_ISP",  ticker:"TIT.MI",   name:"Telecom Italia",    qty:4000,  refValue:32520.00,  sector:"Telecomunicazioni",          ptf:"ISP"},
+  {id:"BABA_ISP", ticker:"BABA",     name:"Alibaba",           qty:300,   refValue:25190.60,  sector:"Tech / E-comm. Cina",        ptf:"ISP"},
+  {id:"META_ISP", ticker:"META",     name:"Meta Platforms",    qty:45,    refValue:22909.71,  sector:"Social Media",               ptf:"ISP"},
+  {id:"STLA1_ISP",ticker:"STLAM.MI", name:"Stellantis (l.1)",  qty:2500,  refValue:12620.00,  sector:"Automobile",                 ptf:"ISP"},
+  {id:"BFF_ISP",  ticker:"BFF.MI",   name:"BFF Bank",          qty:4000,  refValue:12384.00,  sector:"Bancario / Factoring",       ptf:"ISP"},
+  {id:"DAL_ISP",  ticker:"DAL",      name:"Delta Air Lines",   qty:150,   refValue:12151.18,  sector:"Compagnie Aeree",            ptf:"ISP"},
+  {id:"FCT_ISP",  ticker:"FCT.MI",   name:"Fincantieri",       qty:1000,  refValue:10880.00,  sector:"Cantieristica Nav.",         ptf:"ISP"},
+  {id:"BA_ISP",   ticker:"BA",       name:"Boeing",            qty:50,    refValue:9890.82,   sector:"Aerospazio / Difesa",        ptf:"ISP"},
+  {id:"MSFT_ISP", ticker:"MSFT",     name:"Microsoft",         qty:25,    refValue:8526.35,   sector:"Software / Cloud",           ptf:"ISP"},
+  {id:"XOM_ISP",  ticker:"XOM",      name:"Exxon Mobil",       qty:60,    refValue:7189.14,   sector:"Petrolio & Gas",             ptf:"ISP"},
+  {id:"NU_ISP",   ticker:"NU",       name:"Nu Holdings",       qty:500,   refValue:5943.49,   sector:"Fintech",                    ptf:"ISP"},
+  {id:"CPRI_ISP", ticker:"CPRI",     name:"Capri Holdings",    qty:250,   refValue:4139.92,   sector:"Moda / Lusso",               ptf:"ISP"},
+  {id:"DHER_ISP", ticker:"DHER.DE",  name:"Delivery Hero",     qty:100,   refValue:3607.00,   sector:"Food Delivery Tech",         ptf:"ISP"},
+  {id:"ABNB_ISP", ticker:"ABNB",     name:"Airbnb",            qty:25,    refValue:3251.89,   sector:"Hospitality Tech",           ptf:"ISP"},
+  {id:"STLA2_ISP",ticker:"STLAM.MI", name:"Stellantis (l.2)",  qty:409,   refValue:2060.13,   sector:"Automobile",                 ptf:"ISP"},
+  {id:"CNHI_ISP", ticker:"CNHI.MI",  name:"CNH Industrial",    qty:191,   refValue:1788.30,   sector:"Macchinari Industriali",     ptf:"ISP"},
+  {id:"JUVE_ISP", ticker:"JUVE.MI",  name:"Juventus FC",       qty:580,   refValue:1208.72,   sector:"Sport / Intrattenimento",    ptf:"ISP"},
+  {id:"IVG_ISP",  ticker:"IVG.MI",   name:"Iveco Group",       qty:38,    refValue:530.10,    sector:"Veicoli Commerciali",        ptf:"ISP"},
+  {id:"RCS_ISP",  ticker:"RCS.MI",   name:"RCS Mediagroup",    qty:169,   refValue:159.20,    sector:"Media",                      ptf:"ISP"},
+  {id:"FRVIA_ISP",ticker:"FRVIA.PA", name:"Forvia",            qty:6,     refValue:53.64,     sector:"Componenti Automotive",      ptf:"ISP"},
+];
+
+const UCG_EQUITY = [
+  {id:"P911_UCG", ticker:"P911.DE",  name:"Porsche AG",        qty:250,   refValue:11637.50,  sector:"Luxury Vehicles",            ptf:"UCG"},
+  {id:"FRVIA_UCG",ticker:"FRVIA.PA", name:"Forvia",            qty:34,    refValue:302.80,    sector:"Componenti Automotive",      ptf:"UCG"},
+  {id:"MB_UCG",   ticker:"MB.MI",    name:"Mediobanca",        qty:2000,  refValue:53200.00,  sector:"Bancario / Invest.",         ptf:"UCG"},
+  {id:"ISP_UCG",  ticker:"ISP.MI",   name:"Intesa Sanpaolo",   qty:4500,  refValue:27589.50,  sector:"Bancario / Retail",          ptf:"UCG"},
+  {id:"IRE_UCG",  ticker:"IRE.MI",   name:"Iren",              qty:3250,  refValue:8320.00,   sector:"Utility Multi-Servizi",      ptf:"UCG"},
+  {id:"ENI_UCG",  ticker:"ENI.MI",   name:"Eni",               qty:1600,  refValue:32568.00,  sector:"Petrolio & Gas",             ptf:"UCG"},
+  {id:"IF_UCG",   ticker:"IF.MI",    name:"Banca Ifis",        qty:849,   refValue:11775.63,  sector:"Bancario / Factoring",       ptf:"UCG"},
+  {id:"UCG_UCG",  ticker:"UCG.MI",   name:"UniCredit",         qty:490,   refValue:39959.50,  sector:"Bancario",                   ptf:"UCG"},
+  {id:"BFF_UCG",  ticker:"BFF.MI",   name:"BFF Bank",          qty:4500,  refValue:13914.00,  sector:"Bancario / Factoring",       ptf:"UCG"},
+  {id:"SPM_UCG",  ticker:"SPM.MI",   name:"Saipem",            qty:10000, refValue:43660.00,  sector:"Oil & Gas Services",         ptf:"UCG"},
+  {id:"BMPS_UCG", ticker:"BMPS.MI",  name:"MPS",               qty:32,    refValue:354.56,    sector:"Bancario",                   ptf:"UCG"},
+  {id:"JUVE_UCG", ticker:"JUVE.MI",  name:"Juventus FC",       qty:500,   refValue:1042.00,   sector:"Sport / Intrattenimento",    ptf:"UCG"},
+  {id:"AIR_UCG",  ticker:"AIR.PA",   name:"Airbus",            qty:40,    refValue:8220.00,   sector:"Aerospazio / Difesa",        ptf:"UCG"},
+  {id:"STLA_UCG", ticker:"STLAM.MI", name:"Stellantis",        qty:2000,  refValue:10058.00,  sector:"Automobile",                 ptf:"UCG"},
+  {id:"BRE_UCG",  ticker:"BRE.MI",   name:"Brembo",            qty:1000,  refValue:10610.00,  sector:"Componenti Automotive",      ptf:"UCG"},
+];
+
+const ALL_EQUITY = [...ISP_EQUITY, ...UCG_EQUITY];
+const ISP_NON_EQUITY = 64571.47;
+const UCG_NON_EQUITY = 181934.79;
+const ISP_CASH       = 2633.63;
+const GRAND_TOTAL_REF = 1487983.17;
+
+// ── Multipli data (from Excel) ────────────────────────────────────────────────
+const MULTIPLI = [
+  {name:"Sanlorenzo",     ptf:"ISP", pe:"14.5x", peFlag:"▼▼", pb:"2.00x", pbFlag:"▼▼", fcf:"5.5%", fcfFlag:"▼▼", ev:"11.5x", evFlag:"▼", peg:"0.70x", pegFlag:"▼", div:"2.5%", divFlag:"▼▼", nd:"▲"},
+  {name:"Saipem",         ptf:"ENTRAMBI", pe:"13.5x", peFlag:"—",  pb:"1.80x", pbFlag:"—",  fcf:"4.5%", fcfFlag:"—",  ev:"5.1x",  evFlag:"▼", peg:"0.50x", pegFlag:"▼", div:"4.0%", divFlag:"▼",  nd:"▼"},
+  {name:"NVIDIA",         ptf:"ISP", pe:"29.5x", peFlag:"▼",  pb:"24.8x", pbFlag:"▲▲", fcf:"2.3%", fcfFlag:"—",  ev:"28.8x", evFlag:"—", peg:"0.44x", pegFlag:"▼▼",div:"0.5%", divFlag:"▲",  nd:"▼"},
+  {name:"Ageas",          ptf:"ISP", pe:"7.8x",  peFlag:"▼▼", pb:"1.30x", pbFlag:"▼",  fcf:"8.0%", fcfFlag:"▼",  ev:"N/A",   evFlag:"",  peg:"1.30x", pegFlag:"—", div:"4.3%", divFlag:"—",  nd:"N/A"},
+  {name:"Ferrari",        ptf:"ISP", pe:"33.1x", peFlag:"—",  pb:"14.5x", pbFlag:"▲▲", fcf:"3.4%", fcfFlag:"—",  ev:"22.6x", evFlag:"—", peg:"2.10x", pegFlag:"▲▲",div:"1.1%", divFlag:"▲",  nd:"▼▼"},
+  {name:"Amazon",         ptf:"ISP", pe:"33.4x", peFlag:"—",  pb:"7.00x", pbFlag:"—",  fcf:"4.5%", fcfFlag:"—",  ev:"15.3x", evFlag:"▼", peg:"1.10x", pegFlag:"—", div:"0.0%", divFlag:"—",  nd:"▼"},
+  {name:"Apple",          ptf:"ISP", pe:"35.6x", peFlag:"—",  pb:"43.4x", pbFlag:"▲▲", fcf:"3.5%", fcfFlag:"—",  ev:"26.0x", evFlag:"—", peg:"2.70x", pegFlag:"▲▲",div:"0.4%", divFlag:"▲▲", nd:"▼▼"},
+  {name:"ASML",           ptf:"ISP", pe:"67.5x", peFlag:"—",  pb:"15.0x", pbFlag:"▲▲", fcf:"1.5%", fcfFlag:"—",  ev:"38.0x", evFlag:"▲", peg:"2.00x", pegFlag:"▲▲",div:"0.5%", divFlag:"▲",  nd:"▼▼"},
+  {name:"Telecom Italia", ptf:"ISP", pe:"8.5x",  peFlag:"▼",  pb:"0.90x", pbFlag:"▼",  fcf:"7.5%", fcfFlag:"▼",  ev:"4.5x",  evFlag:"▼", peg:"0.60x", pegFlag:"▼", div:"0.0%", divFlag:"▲▲", nd:"▲▲"},
+  {name:"Alibaba",        ptf:"ISP", pe:"15.1x", peFlag:"▼",  pb:"2.20x", pbFlag:"▼",  fcf:"5.0%", fcfFlag:"▼",  ev:"15.2x", evFlag:"—", peg:"0.44x", pegFlag:"▼▼",div:"1.1%", divFlag:"—",  nd:"▼▼"},
+  {name:"Meta Platforms", ptf:"ISP", pe:"18.4x", peFlag:"—",  pb:"7.50x", pbFlag:"▲",  fcf:"4.8%", fcfFlag:"▼",  ev:"13.0x", evFlag:"—", peg:"0.82x", pegFlag:"▼", div:"0.3%", divFlag:"▲",  nd:"▼▼"},
+  {name:"Stellantis",     ptf:"ENTRAMBI", pe:"N/M",  peFlag:"N/A",pb:"0.50x", pbFlag:"▼▼", fcf:"3.0%", fcfFlag:"▲▲",ev:"3.5x",  evFlag:"▼", peg:"N/M",   pegFlag:"",  div:"0.0%", divFlag:"▲▲", nd:"▼▼"},
+  {name:"BFF Bank",       ptf:"ENTRAMBI", pe:"7.5x",  peFlag:"▼",  pb:"0.80x", pbFlag:"▼",  fcf:"9.0%", fcfFlag:"▼",  ev:"N/A",   evFlag:"",  peg:"0.80x", pegFlag:"▼", div:"2.5%", divFlag:"▲",  nd:"N/A"},
+  {name:"Delta Air Lines",ptf:"ISP", pe:"11.3x", peFlag:"—",  pb:"1.50x", pbFlag:"▼",  fcf:"6.5%", fcfFlag:"—",  ev:"8.7x",  evFlag:"—", peg:"0.63x", pegFlag:"▼", div:"1.1%", divFlag:"▲",  nd:"▼"},
+  {name:"Fincantieri",    ptf:"ISP", pe:"10.5x", peFlag:"▼",  pb:"0.90x", pbFlag:"▼▼", fcf:"3.5%", fcfFlag:"▲",  ev:"9.0x",  evFlag:"—", peg:"0.70x", pegFlag:"▼", div:"0.0%", divFlag:"▲",  nd:"▲▲"},
+  {name:"Boeing",         ptf:"ISP", pe:"87.0x", peFlag:"▲▲", pb:"N/M",   pbFlag:"N/A",fcf:"—",    fcfFlag:"",   ev:"35.0x", evFlag:"▲▲",peg:"N/M",   pegFlag:"",  div:"0.0%", divFlag:"▲",  nd:"▲▲"},
+  {name:"Microsoft",      ptf:"ISP", pe:"23.0x", peFlag:"▼",  pb:"6.70x", pbFlag:"▼",  fcf:"2.7%", fcfFlag:"—",  ev:"16.0x", evFlag:"▼", peg:"1.29x", pegFlag:"—", div:"0.9%", divFlag:"—",  nd:"▼"},
+  {name:"Exxon Mobil",    ptf:"ISP", pe:"26.1x", peFlag:"▲",  pb:"2.50x", pbFlag:"—",  fcf:"2.8%", fcfFlag:"▲▲",ev:"11.8x", evFlag:"▲", peg:"0.96x", pegFlag:"—", div:"3.0%", divFlag:"—",  nd:"▼"},
+  {name:"Nu Holdings",    ptf:"ISP", pe:"35.0x", peFlag:"—",  pb:"5.50x", pbFlag:"▲",  fcf:"3.5%", fcfFlag:"—",  ev:"24.0x", evFlag:"—", peg:"0.80x", pegFlag:"▼", div:"0.0%", divFlag:"—",  nd:"▼▼"},
+  {name:"Airbnb",         ptf:"ISP", pe:"32.1x", peFlag:"—",  pb:"7.00x", pbFlag:"▲",  fcf:"6.7%", fcfFlag:"▼▼",ev:"22.0x", evFlag:"—", peg:"1.26x", pegFlag:"—", div:"0.0%", divFlag:"—",  nd:"▼▼"},
+  {name:"CNH Industrial", ptf:"ISP", pe:"8.5x",  peFlag:"▼▼", pb:"1.20x", pbFlag:"▼▼", fcf:"4.5%", fcfFlag:"—",  ev:"7.5x",  evFlag:"▼", peg:"0.50x", pegFlag:"▼", div:"3.5%", divFlag:"▼",  nd:"▲"},
+  // UCG equity
+  {name:"Porsche AG",     ptf:"UCG", pe:"13.0x", peFlag:"▼▼", pb:"1.80x", pbFlag:"▼▼", fcf:"4.0%", fcfFlag:"▼",  ev:"9.5x",  evFlag:"▼▼",peg:"1.20x", pegFlag:"—", div:"2.5%", divFlag:"▼▼", nd:"▲"},
+  {name:"Mediobanca",     ptf:"UCG", pe:"11.5x", peFlag:"—",  pb:"1.70x", pbFlag:"▲",  fcf:"N/A",  fcfFlag:"",   ev:"N/A",   evFlag:"",  peg:"1.20x", pegFlag:"—", div:"5.0%", divFlag:"▼",  nd:"N/A"},
+  {name:"Intesa Sanpaolo",ptf:"UCG", pe:"10.0x", peFlag:"—",  pb:"1.60x", pbFlag:"—",  fcf:"N/A",  fcfFlag:"",   ev:"N/A",   evFlag:"",  peg:"0.90x", pegFlag:"—", div:"6.1%", divFlag:"▼▼", nd:"N/A"},
+  {name:"Iren",           ptf:"UCG", pe:"16.0x", peFlag:"—",  pb:"1.20x", pbFlag:"—",  fcf:"4.5%", fcfFlag:"—",  ev:"9.0x",  evFlag:"—", peg:"1.40x", pegFlag:"—", div:"4.5%", divFlag:"—",  nd:"▲▲"},
+  {name:"Eni",            ptf:"UCG", pe:"16.0x", peFlag:"—",  pb:"1.00x", pbFlag:"▼▼", fcf:"4.5%", fcfFlag:"—",  ev:"7.0x",  evFlag:"▼", peg:"1.20x", pegFlag:"—", div:"5.3%", divFlag:"▼▼", nd:"▼"},
+  {name:"Banca Ifis",     ptf:"UCG", pe:"9.0x",  peFlag:"▼",  pb:"0.90x", pbFlag:"▼",  fcf:"N/A",  fcfFlag:"",   ev:"N/A",   evFlag:"",  peg:"0.80x", pegFlag:"▼", div:"5.5%", divFlag:"▼",  nd:"N/A"},
+  {name:"UniCredit",      ptf:"UCG", pe:"11.3x", peFlag:"—",  pb:"1.70x", pbFlag:"▲",  fcf:"N/A",  fcfFlag:"",   ev:"N/A",   evFlag:"",  peg:"0.90x", pegFlag:"—", div:"3.9%", divFlag:"—",  nd:"N/A"},
+  {name:"MPS",            ptf:"UCG", pe:"8.5x",  peFlag:"▼",  pb:"1.00x", pbFlag:"▼",  fcf:"N/A",  fcfFlag:"",   ev:"N/A",   evFlag:"",  peg:"0.90x", pegFlag:"—", div:"3.5%", divFlag:"—",  nd:"N/A"},
+  {name:"Airbus",         ptf:"UCG", pe:"26.5x", peFlag:"—",  pb:"4.50x", pbFlag:"▲",  fcf:"2.6%", fcfFlag:"▲",  ev:"16.0x", evFlag:"—", peg:"1.53x", pegFlag:"▲", div:"1.0%", divFlag:"▲",  nd:"▼▼"},
+  {name:"Brembo",         ptf:"UCG", pe:"16.5x", peFlag:"▲",  pb:"1.80x", pbFlag:"—",  fcf:"4.0%", fcfFlag:"▲",  ev:"9.0x",  evFlag:"▲", peg:"1.20x", pegFlag:"—", div:"2.5%", divFlag:"—",  nd:"▼"},
+];
+
+// ── Bond data (from BOND sheet) ───────────────────────────────────────────────
+const BONDS = [
+  {name:"SocGen OC 24/39",     isin:"XS2699738113", emittente:"Société Générale",    tipo:"Corporate USD",  ptf:"ISP",
+   carico:97.99, mkt:92.8,  valuta:"USD", scad:"05/01/2039", cedola:"8.000%", ytmCosto:8.79, ytmMkt:9.55,
+   macDur:7.90, modDur:7.26, convexity:76.5, plEur:-998.04,  plPct:-5.30,
+   ratingSP:"A", ratingMdy:"A1", ratingFitch:"A+", nominale:"22.000 noz."},
+  {name:"BTP 01MZ48 3,45%",    isin:"IT0005273013", emittente:"Repubblica Italiana",  tipo:"BTP Sovrano",    ptf:"ISP",
+   carico:97.63, mkt:88.24, valuta:"EUR", scad:"01/03/2048", cedola:"3.450%", ytmCosto:3.69, ytmMkt:4.38,
+   macDur:15.12, modDur:14.85,convexity:283.6,plEur:-3285.14,plPct:-9.61,
+   ratingSP:"BBB+", ratingMdy:"Baa2", ratingFitch:"BBB", nominale:"35.000 noz."},
+  {name:"BTP 01OT54 4,30%",    isin:"IT0005611741", emittente:"Repubblica Italiana",  tipo:"BTP Sovrano",    ptf:"ISP+UCG",
+   carico:98.31, mkt:97.71, valuta:"EUR", scad:"01/10/2054", cedola:"4.300%", ytmCosto:4.47, ytmMkt:4.51,
+   macDur:16.26, modDur:15.90,convexity:359.7,plEur:-216.82, plPct:-0.61,
+   ratingSP:"BBB+", ratingMdy:"Baa2", ratingFitch:"BBB", nominale:"6.000+30.000 noz."},
+  {name:"BTP 01SET49 3,85%",   isin:"IT0005418088", emittente:"Repubblica Italiana",  tipo:"BTP Sovrano",    ptf:"UCG",
+   carico:101.15,mkt:93.27, valuta:"EUR", scad:"01/09/2049", cedola:"3.850%", ytmCosto:3.86, ytmMkt:4.41,
+   macDur:15.33, modDur:15.04,convexity:299.4,plEur:-3189.93,plPct:-7.79,
+   ratingSP:"BBB+", ratingMdy:"Baa2", ratingFitch:"BBB", nominale:"40.000 noz."},
+  {name:"Telecom 7.75% 33 TLX",isin:"XS0301313888", emittente:"Telecom Italia Finance",tipo:"Corporate HY",  ptf:"UCG",
+   carico:106.01,mkt:122.66,valuta:"EUR", scad:"24/01/2033", cedola:"7.750%", ytmCosto:7.22, ytmMkt:4.31,
+   macDur:5.24,  modDur:4.89, convexity:32.1, plEur:5591.09, plPct:15.71,
+   ratingSP:"BB+", ratingMdy:"Ba1", ratingFitch:"BB+", nominale:"33.000 noz."},
+  {name:"Romania 4.625%49€",   isin:"EU000A3K4D13", emittente:"Governo Romania",       tipo:"Sovrano Estero", ptf:"UCG",
+   carico:80.06, mkt:78.90, valuta:"EUR", scad:"26/04/2049", cedola:"4.625%", ytmCosto:6.38, ytmMkt:6.49,
+   macDur:13.34, modDur:12.54,convexity:228.3,plEur:-152.70, plPct:-1.45,
+   ratingSP:"BBB-", ratingMdy:"Baa3", ratingFitch:"BBB-", nominale:"13.000 noz."},
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let snapshot = null;
+let charts = {};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const fmt  = (v,d=2) => v != null ? Number(v).toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}) : '—';
+const fmtE = v => v != null ? '€' + fmt(v,0) : '—';
+const fmtP = v => v != null ? (v>=0?'+':'')+fmt(v,2)+'%' : '—';
+const pCls = v => v > 0 ? 'pos' : v < 0 ? 'neg' : 'neu';
+const flagCls = f => f==='▲▲'?'flag-pp':f==='▲'?'flag-p':f==='▼'?'flag-mm':f==='▼▼'?'flag-mm':'flag-m';
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const idx = ['overview','holdings','multipli','bonds'].indexOf(name);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  document.getElementById(`section-${name}`).classList.add('active');
+  if (name === 'multipli') renderMultipli();
+  if (name === 'bonds')    renderBonds();
+}
+
+// ── Load data ─────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const r = await fetch(`${BASE_URL}/data/portfolio_prices.json`);
+    if (r.ok) {
+      snapshot = await r.json();
+      document.getElementById('lastUpd').textContent =
+        'Prezzi aggiornati: ' + new Date(snapshot.updated).toLocaleString('it-IT');
+    }
+  } catch(e) {
+    document.getElementById('lastUpd').textContent = 'Dati statici (prezzi da Excel, luglio 2026)';
+  }
+  renderOverview();
+  renderHoldings();
+}
+
+// ── Overview ──────────────────────────────────────────────────────────────────
+function renderOverview() {
+  const s = snapshot?.summary;
+  const ispEq  = s?.ispCurEquity  || ISP_EQUITY.reduce((a,p)=>a+p.refValue,0);
+  const ucgEq  = s?.ucgCurEquity  || UCG_EQUITY.reduce((a,p)=>a+p.refValue,0);
+  const ispTot = ispEq + ISP_NON_EQUITY + ISP_CASH;
+  const ucgTot = ucgEq + UCG_NON_EQUITY;
+  const grand  = ispTot + ucgTot;
+  const pnl    = s?.pnlEquity;
+  const pnlPct = s ? s.pnlEquity / s.totalRefEquity * 100 : null;
+
+  const html = `
+  <div class="cards-row">
+    <div class="card total">
+      <div class="card-label">Portafoglio Totale</div>
+      <div class="card-value">${fmtE(grand)}</div>
+      <div class="card-sub ${pCls(pnl)}">${pnl != null ? fmtP(pnlPct)+' equity vs rif.' : 'Rif. luglio 2026'}</div>
+    </div>
+    <div class="card isp">
+      <div class="card-label">ISP</div>
+      <div class="card-value">${fmtE(ispTot)}</div>
+      <div class="card-sub">29 azioni + bond + ETF + ETC</div>
+    </div>
+    <div class="card ucg">
+      <div class="card-label">UCG</div>
+      <div class="card-value">${fmtE(ucgTot)}</div>
+      <div class="card-sub">15 azioni + bond + ETF</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Azionario</div>
+      <div class="card-value">${fmtE(ispEq + ucgEq)}</div>
+      <div class="card-sub">${((ispEq+ucgEq)/grand*100).toFixed(1)}% del totale</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Non-Equity</div>
+      <div class="card-value">${fmtE(ISP_NON_EQUITY + UCG_NON_EQUITY)}</div>
+      <div class="card-sub">Bond + BTP + ETF + ETC</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Liquidità</div>
+      <div class="card-value">${fmtE(ISP_CASH)}</div>
+      <div class="card-sub">Conto corrente ISP</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-header"><span class="box-title">Allocazione per Classe</span></div>
+      <div class="chart-wrap"><canvas id="chartAlloc"></canvas></div>
+    </div>
+    <div class="box">
+      <div class="box-header"><span class="box-title">ISP vs UCG</span></div>
+      <div class="chart-wrap"><canvas id="chartPtf"></canvas></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box-header"><span class="box-title">Top 10 Posizioni Azionarie per Controvalore</span></div>
+    <div class="box-body">
+    <table>
+      <thead><tr><th>Titolo</th><th>Ptf.</th><th>Settore</th><th>Controvalore rif.</th><th>% ptf. equity</th></tr></thead>
+      <tbody>
+      ${ALL_EQUITY.slice().sort((a,b)=>b.refValue-a.refValue).slice(0,10).map(p=>`
+        <tr>
+          <td><div class="ticker-sym">${p.ticker}</div><div class="ticker-name">${p.name}</div></td>
+          <td><span class="ptf-badge ptf-${p.ptf.toLowerCase()}">${p.ptf}</span></td>
+          <td style="color:var(--mu)">${p.sector}</td>
+          <td>${fmtE(p.refValue)}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1;background:var(--bg3);border-radius:3px;height:6px">
+                <div style="width:${Math.min(p.refValue/(ispEq+ucgEq)*100*3,100).toFixed(1)}%;height:100%;background:${p.ptf==='ISP'?'var(--isp)':'var(--ucg)'};border-radius:3px"></div>
+              </div>
+              <span>${(p.refValue/(ispEq+ucgEq)*100).toFixed(1)}%</span>
+            </div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>`;
+
+  document.getElementById('overview-content').innerHTML = html;
+
+  // Sector data
+  const sectorMap = {};
+  ALL_EQUITY.forEach(p => {
+    const s = p.sector.split('/')[0].trim();
+    sectorMap[s] = (sectorMap[s]||0) + p.refValue;
+  });
+  const sectors = Object.entries(sectorMap).sort((a,b)=>b[1]-a[1]);
+
+  // Allocation donut
+  const allocData = [ispEq+ucgEq, ISP_NON_EQUITY+UCG_NON_EQUITY, ISP_CASH];
+  destroyChart('chartAlloc');
+  charts['chartAlloc'] = new Chart(document.getElementById('chartAlloc'), {
+    type:'doughnut',
+    data:{labels:['Azionario','Bond + ETF + ETC','Liquidità'],
+      datasets:[{data:allocData, backgroundColor:['#58a6ff','#d29922','#3fb950'],
+        borderColor:'#0d1117',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7d8590',font:{size:11}}}}}
+  });
+
+  // ISP vs UCG
+  destroyChart('chartPtf');
+  charts['chartPtf'] = new Chart(document.getElementById('chartPtf'), {
+    type:'doughnut',
+    data:{labels:['ISP','UCG'],
+      datasets:[{data:[ispTot,ucgTot], backgroundColor:['#58a6ff','#3fb950'],
+        borderColor:'#0d1117',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#7d8590',font:{size:11}}}}}
+  });
+}
+
+// ── Holdings ──────────────────────────────────────────────────────────────────
+let holdingFilter = 'ALL';
+function renderHoldings() {
+  const positions = snapshot?.positions || ALL_EQUITY.map(p => ({
+    ...p, currentPrice:null, currentValue:null, pnlAbs:null, pnlPct:null
+  }));
+
+  const html = `
+  <div class="box">
+    <div class="filter-bar">
+      ${['ALL','ISP','UCG'].map(f=>`
+        <button class="filter-btn ${holdingFilter===f?'active':''}"
+          onclick="holdingFilter='${f}';renderHoldings()">${f}</button>`).join('')}
+    </div>
+    <div class="box-body">
+    <table>
+      <thead><tr>
+        <th>Titolo</th><th>Ptf.</th><th>Settore</th><th>Qtà</th>
+        <th>Prezzo live</th><th>Controvalore rif.</th>
+        <th>Valore live</th><th>P&L €</th><th>P&L %</th>
+      </tr></thead>
+      <tbody>
+      ${positions
+        .filter(p => holdingFilter === 'ALL' || p.ptf === holdingFilter)
+        .sort((a,b) => b.refValue - a.refValue)
+        .map(p => `
+        <tr>
+          <td><div class="ticker-sym">${p.ticker}</div><div class="ticker-name">${p.name}</div></td>
+          <td><span class="ptf-badge ptf-${p.ptf.toLowerCase()}">${p.ptf}</span></td>
+          <td style="color:var(--mu);font-size:11px">${p.sector}</td>
+          <td style="font-family:monospace">${p.qty.toLocaleString('it-IT')}</td>
+          <td style="font-family:monospace">${p.currentPrice ? fmt(p.currentPrice) : '<span style="color:var(--mu)">—</span>'}</td>
+          <td style="font-family:monospace">${fmtE(p.refValue)}</td>
+          <td style="font-family:monospace">${p.currentValue ? fmtE(p.currentValue) : '<span style="color:var(--mu)">—</span>'}</td>
+          <td class="${pCls(p.pnlAbs)}" style="font-family:monospace">${p.pnlAbs ? (p.pnlAbs>=0?'+':'')+fmt(p.pnlAbs,0)+'€' : '—'}</td>
+          <td class="${pCls(p.pnlPct)}" style="font-family:monospace">${p.pnlPct ? fmtP(p.pnlPct) : '—'}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>`;
+
+  document.getElementById('holdings-content').innerHTML = html;
+}
+
+// ── Multipli ──────────────────────────────────────────────────────────────────
+function renderMultipli() {
+  const flagHtml = f => `<span class="${flagCls(f)}">${f||'—'}</span>`;
+
+  const html = `
+  <div class="box">
+    <div class="box-header">
+      <span class="box-title">Multipli di Valutazione — Luglio 2026</span>
+      <span style="font-size:11px;color:var(--mu)">
+        <span class="flag-pp">▲▲</span> Sopravval. &nbsp;
+        <span class="flag-p">▲</span> Premium &nbsp;
+        <span class="flag-m">—</span> Neutro &nbsp;
+        <span class="flag-mm">▼▼</span> Sottoval.
+      </span>
+    </div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Titolo</th><th>Ptf.</th>
+        <th>P/E TTM</th><th>P/BV</th><th>FCF Yield</th>
+        <th>EV/EBITDA</th><th>PEG</th><th>Div Yield</th><th>Net Debt</th>
+      </tr></thead>
+      <tbody>
+      ${MULTIPLI.map(m => `
+        <tr>
+          <td style="font-weight:600">${m.name}</td>
+          <td><span class="ptf-badge ptf-${m.ptf==='ENTRAMBI'?'isp':m.ptf.toLowerCase()}">${m.ptf}</span></td>
+          <td>${m.pe} ${flagHtml(m.peFlag)}</td>
+          <td>${m.pb} ${flagHtml(m.pbFlag)}</td>
+          <td>${m.fcf} ${flagHtml(m.fcfFlag)}</td>
+          <td>${m.ev} ${flagHtml(m.evFlag)}</td>
+          <td>${m.peg} ${flagHtml(m.pegFlag)}</td>
+          <td>${m.div} ${flagHtml(m.divFlag)}</td>
+          <td>${flagHtml(m.nd)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>`;
+
+  document.getElementById('multipli-content').innerHTML = html;
+}
+
+// ── Bonds ─────────────────────────────────────────────────────────────────────
+function renderBonds() {
+  const ytmCls = v => v > 6.5 ? 'ytm-high' : v > 4.5 ? 'ytm-mid' : 'ytm-low';
+  const totPlEur = BONDS.reduce((a,b)=>a+b.plEur,0);
+  const totalControvalore = 17831+30884+36448+37757+41189+10386;
+
+  const html = `
+  <div class="cards-row" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+    <div class="card"><div class="card-label">Controvalore Bond</div>
+      <div class="card-value">€173.513</div><div class="card-sub">6 emissioni</div></div>
+    <div class="card"><div class="card-label">YTM Medio Pond.</div>
+      <div class="card-value" style="color:var(--yl)">5.41%</div><div class="card-sub">Sul prezzo di carico</div></div>
+    <div class="card"><div class="card-label">Modified Duration</div>
+      <div class="card-value" style="color:var(--rd)">11.82 anni</div><div class="card-sub">⚠ Elevata</div></div>
+    <div class="card"><div class="card-label">P&L Latente Totale</div>
+      <div class="card-value ${totPlEur>=0?'pos':'neg'}">${totPlEur>=0?'+':''}€${Math.round(totPlEur).toLocaleString('it-IT')}</div>
+      <div class="card-sub">Minusvalenze BTP, plusvalenza TIM</div></div>
+    <div class="card"><div class="card-label">Impact +100 bps</div>
+      <div class="card-value" style="color:var(--rd)">−11.82%</div><div class="card-sub">≈ −€20.515</div></div>
+    <div class="card"><div class="card-label">IG vs HY</div>
+      <div class="card-value">76% / 24%</div><div class="card-sub">IG €132k · HY €41k</div></div>
+  </div>
+
+  <div class="box">
+    <div class="box-header"><span class="box-title">Portafoglio Obbligazionario — Analytics</span></div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Nome</th><th>Ptf.</th><th>Tipo</th><th>Scadenza</th><th>Cedola</th>
+        <th>P.Carico</th><th>P.Mkt</th><th>YTM costo</th><th>YTM mkt</th>
+        <th>Mod.Dur</th><th>P&L €</th><th>P&L %</th>
+        <th>S&P</th><th>Moody's</th>
+      </tr></thead>
+      <tbody>
+      ${BONDS.map(b => `
+        <tr class="bond-row">
+          <td>
+            <div style="font-weight:600;font-size:12px">${b.name}</div>
+            <div style="color:var(--mu);font-size:10px;font-family:monospace">${b.isin}</div>
+          </td>
+          <td><span class="ptf-badge ptf-${b.ptf.includes('UCG')?'ucg':'isp'}">${b.ptf}</span></td>
+          <td style="color:var(--mu);font-size:11px">${b.tipo}</td>
+          <td style="font-family:monospace;font-size:11px">${b.scad}</td>
+          <td style="color:var(--yl)">${b.cedola}</td>
+          <td style="font-family:monospace">${b.carico.toFixed(2)}</td>
+          <td style="font-family:monospace">${b.mkt.toFixed(2)}</td>
+          <td class="${ytmCls(b.ytmCosto)}" style="font-weight:700">${b.ytmCosto.toFixed(2)}%</td>
+          <td class="${ytmCls(b.ytmMkt)}">${b.ytmMkt.toFixed(2)}%</td>
+          <td style="color:var(--mu)">${b.modDur.toFixed(2)}a</td>
+          <td class="${b.plEur>=0?'plpos':'plneg'}" style="font-family:monospace">
+            ${b.plEur>=0?'+':''}€${Math.round(b.plEur).toLocaleString('it-IT')}</td>
+          <td class="${b.plPct>=0?'plpos':'plneg'}" style="font-family:monospace">
+            ${b.plPct>=0?'+':''}${b.plPct.toFixed(2)}%</td>
+          <td style="color:${b.ratingSP.startsWith('BBB')||b.ratingSP.startsWith('A')?'var(--gr)':'var(--yl)'}">${b.ratingSP}</td>
+          <td style="color:${b.ratingMdy.startsWith('Baa')||b.ratingMdy.startsWith('A')?'var(--gr)':'var(--yl)'}">${b.ratingMdy}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box-header"><span class="box-title">Ranking YTM — dal più alto</span></div>
+    <div class="box-body" style="padding:16px">
+      ${BONDS.slice().sort((a,b)=>b.ytmCosto-a.ytmCosto).map((b,i)=>`
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="color:var(--mu);font-size:12px;width:20px">${i+1}°</span>
+          <span style="font-weight:600;min-width:180px">${b.name}</span>
+          <div style="flex:1;background:var(--bg3);border-radius:3px;height:8px">
+            <div style="width:${(b.ytmCosto/10*100).toFixed(0)}%;height:100%;
+              background:${b.ytmCosto>6.5?'var(--rd)':b.ytmCosto>4.5?'var(--yl)':'var(--gr)'};border-radius:3px"></div>
+          </div>
+          <span class="${ytmCls(b.ytmCosto)}" style="font-weight:700;width:50px;text-align:right">${b.ytmCosto.toFixed(2)}%</span>
+          <span style="color:var(--mu);font-size:11px">${b.valuta}</span>
+        </div>`).join('')}
+    </div>
+  </div>`;
+
+  document.getElementById('bonds-content').innerHTML = html;
+}
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
