@@ -1,0 +1,20 @@
+{
+  "reports": [
+    {
+      "date": "2026-07-06",
+      "agent": "value",
+      "path": "data/reports/2026-07-06_value.json"
+    },
+    {
+      "date": "2026-07-06",
+      "agent": "growth",
+      "path": "data/reports/2026-07-06_growth.json"
+    },
+    {
+      "date": "2026-07-06",
+      "agent": "quality",
+      "path": "data/reports/2026-07-06_quality.json"
+    }
+  ],
+  "updated": "2026-07-06T11:04:36.518891"
+}

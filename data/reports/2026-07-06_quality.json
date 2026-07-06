@@ -1,0 +1,40 @@
+{
+  "agent": "quality",
+  "date": "2026-07-06",
+  "timestamp": "2026-07-06T11:04:36.518260",
+  "stats": {
+    "total_candidates": 0,
+    "total_etf": 3
+  },
+  "top_stocks": [],
+  "top_etf": [
+    {
+      "ticker": "VWCE.DE",
+      "name": "Vanguard FTSE All-World UCITS ETF USD Accumulation",
+      "category": "N/A",
+      "total_assets": 72377925632.0,
+      "expense_ratio": null,
+      "return_1y": 0.27146133554685015,
+      "score": 1.2
+    },
+    {
+      "ticker": "VEUR.AS",
+      "name": "Vanguard FTSE Developed Europe UCITS ETF",
+      "category": "N/A",
+      "total_assets": 7351197696.0,
+      "expense_ratio": null,
+      "return_1y": 0.23255803312165577,
+      "score": 1.2
+    },
+    {
+      "ticker": "IEMA.AS",
+      "name": "iShares MSCI EM UCITS ETF USD (Acc)",
+      "category": "N/A",
+      "total_assets": 9746741248.0,
+      "expense_ratio": null,
+      "return_1y": 0.4671664827367198,
+      "score": 1.2
+    }
+  ],
+  "report_text": "═══════════════════════════════════════════════════\n🟡 QUALITY AGENT | 06 July 2026\n═══════════════════════════════════════════════════\n\n📊 EXECUTIVE SUMMARY\n\nA metà 2026 il contesto di mercato mostra una marcata divergenza geografica: i mercati emergenti e i temi legati alla transizione energetica stanno vivendo una fase di forte momentum (+46-50% su base annua), mentre l'Europa sviluppata, e in particolare la Germania, mostra una ripresa più contenuta (+6-7% per il DAX). In assenza di candidati azionari che abbiano superato lo screening quantitativo quality/GARP, l'analisi si concentra su un'allocazione strategica tramite ETF che privilegi esposizione diversificata, costi contenuti e posizionamento su aree geografiche e tematiche con fondamentali solidi.\n\nCandidati analizzati: 0 azioni + 10 ETF → Proposte finali: 3 ETF + 2 watchlist\n\n───────────────────────────────────────────────────\n📈 TOP PICKS — AZIONI (max 5)\n───────────────────────────────────────────────────\n\n**Nessun candidato azionario ha superato i criteri qualitativi quality/GARP questa settimana.**\n\nL'assenza di singoli titoli riflette probabilmente condizioni di valutazione tese sui mercati sviluppati o metriche di redditività (ROE/ROIC) e solidità di bilancio non allineate con gli standard richiesti. Si raccomanda di attendere correzioni tecniche o la pubblicazione dei risultati trimestrali per identificare opportunità di ingresso a prezzi ragionevoli su aziende con fondamentali superiori.\n\n───────────────────────────────────────────────────\n🧩 TOP PICKS — ETF (max 3)\n───────────────────────────────────────────────────\n\n1. **VWCE.DE** — Vanguard FTSE All-World UCITS ETF USD Accumulation\n   Categoria: Azionario globale | Exchange: GER\n   AUM: €72.4 miliardi | TER: non disponibile | Rendimento 1Y: +27.1%\n   \n   Analisi: Scelta core per eccellenza, offre esposizione diversificata a circa 4.000 titoli tra mercati sviluppati ed emergenti con bias large/mid cap. L'AUM imponente garantisce liquidità eccellente e tracking error minimo. La struttura ad accumulo ottimizza l'efficienza fiscale per orizzonti pluriennali. Rappresenta la base ideale per un portafoglio quality/GARP che privilegia la diversificazione geografica e settoriale senza scommesse concentrate.\n   \n   ⚠️ Rischi: Esposizione significativa (~65%) al mercato USA che potrebbe soffrire in caso di correzioni tecnologiche o rialzo tassi Fed; assenza di hedging valutario espone a rischio EUR/USD.\n\n2. **IEMA.AS** — iShares MSCI EM UCITS ETF USD (Acc)\n   Categoria: Emergenti | Exchange: AMS\n   AUM: €9.7 miliardi | TER: non disponibile | Rendimento 1Y: +46.7%\n   \n   Analisi: Performance stellare riflette il recupero dei mercati emergenti, trainato da Cina, India e Taiwan. L'esposizione tech asiatica beneficia del reshoring manifatturiero e della crescita domestica. Dimensione del fondo solida con liquidità adeguata. Rappresenta un complemento tattico vincente per chi ritiene che il ciclo emergenti abbia ancora spazio, pur mantenendo cautela su concentrazione geografica (Cina ~30%).\n   \n   ⚠️ Rischi: Volatilità elevata intrinseca agli EM; rischio geopolitico (tensioni USA-Cina, Taiwan); potenziale correzione dopo rally esteso.\n\n3. **IUSN.DE** — iShares MSCI World Small Cap UCITS ETF\n   Categoria: Small Cap globali | Exchange: GER\n   AUM: €8.3 miliardi | TER: non disponibile | Rendimento 1Y: +31.7%\n   \n   Analisi: Esposizione a circa 4.500 small cap di qualità nei mercati sviluppati, storicamente caratterizzate da maggiore crescita organica e minore efficienza di pricing. Il rendimento superiore al large cap (+31.7% vs +27.1% del VWCE) conferma il momentum attuale. Adatto per investitori quality che cercano extra-rendimento accettando maggiore volatilità e minor liquidità. Dimensione del fondo robusta per la categoria.\n   \n   ⚠️ Rischi: Maggiore sensibilità a recessioni economiche; spread bid-ask più ampi; rischio liquidità in fasi di stress.\n\n───────────────────────────────────────────────────\n👁 WATCHLIST — Da monitorare (max 5)\n───────────────────────────────────────────────────\n\n• **IQQH.DE** (iShares Global Clean Energy Transition) — Rendimento eccezionale (+50.8%) su tema strutturale green, ma AUM più contenuto (€5.1B) e volatilità elevata richiedono conferma sostenibilità trend prima di allocazione significativa.\n\n• **XDEM.DE** (Xtrackers MSCI World Momentum) — Interessante approccio factor (+35.1%), ma timing delicato: momentum factor può invertirsi rapidamente in correzioni; monitorare segnali di rotazione settoriale prima dell'ingresso.\n\n───────────────────────────────────────────────────\n⭐ CONVERGENZA INTER-AGENTE\n───────────────────────────────────────────────────\n\nI seguenti asset appaiono anche nei report degli altri agenti questa settimana, segnale di interesse multiplo:\n**HPQ, HCA, BBWI, CNX, BZU.MI, LLY, MU, NVDA, TER, CELH**\n\nQuesta convergenza su titoli tecnologici (NVDA, MU, TER), healthcare (LLY, HCA), consumer discretionary (BBWI) e utility italiane (BZU.MI) suggerisce una fase di mercato in cui gli agenti quantitativi identificano valore sia in mega-cap di qualità con momentum (NVDA, LLY) sia in situazioni special di repricing (HPQ, CNX). La presenza multipla rafforza l'ipotesi di opportunità concrete, meritevoli di analisi fondamentale approfondita per confermare allineamento con criteri quality prima dell'inserimento in portafoglio.\n\n───────────────────────────────────────────────────"
+}
