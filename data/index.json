@@ -1,6 +1,21 @@
 {
   "reports": [
     {
+      "date": "2026-09-21",
+      "agent": "value",
+      "path": "data/reports/2026-09-21_value.json"
+    },
+    {
+      "date": "2026-09-21",
+      "agent": "growth",
+      "path": "data/reports/2026-09-21_growth.json"
+    },
+    {
+      "date": "2026-09-21",
+      "agent": "quality",
+      "path": "data/reports/2026-09-21_quality.json"
+    },
+    {
       "date": "2026-09-17",
       "agent": "value",
       "path": "data/reports/2026-09-17_value.json"
@@ -301,5 +316,5 @@
       "path": "data/reports/2026-07-06_quality.json"
     }
   ],
-  "updated": "2026-09-17T10:55:41.263912"
+  "updated": "2026-09-21T12:48:22.882821"
 }
