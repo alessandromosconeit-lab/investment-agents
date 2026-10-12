@@ -1,42 +1,42 @@
 {
-  "updated": "2026-10-08T12:48:19.179927",
+  "updated": "2026-10-12T15:21:45.038416",
   "prices": {
-    "RCS.MI": 0.832,
-    "IVG.MI": 14.275,
-    "XOM": 164.05,
-    "FRVIA.PA": 8.91,
-    "P911.DE": 42.27,
-    "IF.MI": 10.75,
-    "RACE.MI": 344.7,
-    "JUVE.MI": 1.736,
-    "AIR.PA": 187.1,
-    "ISP.MI": 6.12,
-    "NU": 15.58,
-    "BRE.MI": 9.96,
-    "DAL": 82.97,
-    "MSFT": 529.76,
-    "UCG.MI": 76.23,
-    "BABA": 107.0,
-    "ASML.AS": 1594.8,
-    "FCT.MI": 11.88,
-    "STLAM.MI": 3.9725,
-    "NVDA": 237.47,
-    "CPRI": 14.44,
-    "MB.MI": 24.52,
-    "IRE.MI": 2.41,
-    "TIT.MI": 5.734,
-    "ENI.MI": 24.865,
-    "BA": 188.32,
+    "SL.MI": 34.88,
+    "RCS.MI": 0.84,
+    "ABNB": 163.985,
+    "IF.MI": 10.22,
+    "AIR.PA": 188.16,
+    "SPM.MI": 4.643,
+    "AMZN": 261.35,
+    "STLAM.MI": 3.9535,
+    "MSFT": 542.22,
+    "MB.MI": 25.36,
+    "META": 750.45,
+    "IRE.MI": 2.412,
+    "TIT.MI": 5.524,
+    "NU": 16.085,
+    "ISP.MI": 6.167,
+    "IVG.MI": 14.34,
+    "DAL": 80.76,
+    "AAPL": 340.5,
+    "FCT.MI": 12.62,
+    "BRE.MI": 9.965,
+    "RACE.MI": 349.5,
+    "BA": 190.39,
+    "FRVIA.PA": 8.576,
+    "CPRI": 15.045,
+    "UCG.MI": 76.06,
+    "BMPS.MI": 11.118,
     "BFF.MI": 2.004,
-    "AMZN": 259.92,
-    "ABNB": 160.63,
-    "DHER.DE": 36.45,
-    "SPM.MI": 4.438,
-    "META": 721.31,
-    "BMPS.MI": 10.938,
-    "AAPL": 336.67,
-    "SL.MI": 35.18,
-    "AGS.BR": 72.0
+    "JUVE.MI": 1.748,
+    "DHER.DE": 36.88,
+    "ENI.MI": 25.44,
+    "BABA": 110.26,
+    "P911.DE": 42.02,
+    "ASML.AS": 1579.6,
+    "NVDA": 225.7246,
+    "XOM": 171.99,
+    "AGS.BR": 72.05
   },
   "positions": [
     {
@@ -47,10 +47,10 @@
       "refValue": 180900.0,
       "sector": "Luxury / Nautica",
       "ptf": "ISP",
-      "currentPrice": 35.18,
-      "currentValue": 175900.0,
-      "pnlAbs": -5000.0,
-      "pnlPct": -2.7639579878385847
+      "currentPrice": 34.88,
+      "currentValue": 174400.0,
+      "pnlAbs": -6500.0,
+      "pnlPct": -3.5931453841901604
     },
     {
       "id": "SPM_ISP",
@@ -60,10 +60,10 @@
       "refValue": 144338.8,
       "sector": "Oil & Gas Services",
       "ptf": "ISP",
-      "currentPrice": 4.438,
-      "currentValue": 148007.3,
-      "pnlAbs": 3668.5,
-      "pnlPct": 2.5415896487985217
+      "currentPrice": 4.643,
+      "currentValue": 154844.05,
+      "pnlAbs": 10505.25,
+      "pnlPct": 7.278188539741221
     },
     {
       "id": "NVDA_ISP",
@@ -73,10 +73,10 @@
       "refValue": 114010.21,
       "sector": "Semiconduttori / AI",
       "ptf": "ISP",
-      "currentPrice": 237.47,
-      "currentValue": 159104.9,
-      "pnlAbs": 45094.68999999999,
-      "pnlPct": 39.55320317364557
+      "currentPrice": 225.7246,
+      "currentValue": 151235.48200000002,
+      "pnlAbs": 37225.27200000001,
+      "pnlPct": 32.65082311487718
     },
     {
       "id": "AGS_ISP",
@@ -86,10 +86,10 @@
       "refValue": 84660.0,
       "sector": "Assicurazioni",
       "ptf": "ISP",
-      "currentPrice": 72.0,
-      "currentValue": 86400.0,
-      "pnlAbs": 1740.0,
-      "pnlPct": 2.0552799433026223
+      "currentPrice": 72.05,
+      "currentValue": 86460.0,
+      "pnlAbs": 1800.0,
+      "pnlPct": 2.1261516654854713
     },
     {
       "id": "RACE1_ISP",
@@ -99,10 +99,10 @@
       "refValue": 83325.0,
       "sector": "Luxury Vehicles",
       "ptf": "ISP",
-      "currentPrice": 344.7,
-      "currentValue": 86175.0,
-      "pnlAbs": 2850.0,
-      "pnlPct": 3.4203420342034203
+      "currentPrice": 349.5,
+      "currentValue": 87375.0,
+      "pnlAbs": 4050.0,
+      "pnlPct": 4.86048604860486
     },
     {
       "id": "AMZN_ISP",
@@ -112,10 +112,10 @@
       "refValue": 63584.38,
       "sector": "E-commerce / Cloud",
       "ptf": "ISP",
-      "currentPrice": 259.92,
-      "currentValue": 77976.0,
-      "pnlAbs": 14391.620000000003,
-      "pnlPct": 22.6338921603073
+      "currentPrice": 261.35,
+      "currentValue": 78405.0,
+      "pnlAbs": 14820.620000000003,
+      "pnlPct": 23.308586165344387
     },
     {
       "id": "AAPL_ISP",
@@ -125,10 +125,10 @@
       "refValue": 40433.61,
       "sector": "Consumer Tech",
       "ptf": "ISP",
-      "currentPrice": 336.67,
-      "currentValue": 50500.5,
-      "pnlAbs": 10066.89,
-      "pnlPct": 24.897331700038656
+      "currentPrice": 340.5,
+      "currentValue": 51075.0,
+      "pnlAbs": 10641.39,
+      "pnlPct": 26.31817935623359
     },
     {
       "id": "ASML_ISP",
@@ -138,10 +138,10 @@
       "refValue": 40370.0,
       "sector": "Semicond. Equipment",
       "ptf": "ISP",
-      "currentPrice": 1594.8,
-      "currentValue": 39870.0,
-      "pnlAbs": -500.0,
-      "pnlPct": -1.238543472875898
+      "currentPrice": 1579.6,
+      "currentValue": 39490.0,
+      "pnlAbs": -880.0,
+      "pnlPct": -2.17983651226158
     },
     {
       "id": "RACE2_ISP",
@@ -151,10 +151,10 @@
       "refValue": 36985.6,
       "sector": "Luxury Vehicles",
       "ptf": "ISP",
-      "currentPrice": 344.7,
-      "currentValue": 37917.0,
-      "pnlAbs": 931.4000000000015,
-      "pnlPct": 2.51827738363039
+      "currentPrice": 349.5,
+      "currentValue": 38445.0,
+      "pnlAbs": 1459.4000000000015,
+      "pnlPct": 3.945860010382423
     },
     {
       "id": "TIT_ISP",
@@ -164,10 +164,10 @@
       "refValue": 32520.0,
       "sector": "Telecomunicazioni",
       "ptf": "ISP",
-      "currentPrice": 5.734,
-      "currentValue": 22936.0,
-      "pnlAbs": -9584.0,
-      "pnlPct": -29.47109471094711
+      "currentPrice": 5.524,
+      "currentValue": 22096.0,
+      "pnlAbs": -10424.0,
+      "pnlPct": -32.054120541205414
     },
     {
       "id": "BABA_ISP",
@@ -177,10 +177,10 @@
       "refValue": 25190.6,
       "sector": "Tech / E-comm. Cina",
       "ptf": "ISP",
-      "currentPrice": 107.0,
-      "currentValue": 32100.0,
-      "pnlAbs": 6909.4000000000015,
-      "pnlPct": 27.428485228617035
+      "currentPrice": 110.26,
+      "currentValue": 33078.0,
+      "pnlAbs": 7887.4000000000015,
+      "pnlPct": 31.31088580661041
     },
     {
       "id": "META_ISP",
@@ -190,10 +190,10 @@
       "refValue": 22909.71,
       "sector": "Social Media",
       "ptf": "ISP",
-      "currentPrice": 721.31,
-      "currentValue": 32458.949999999997,
-      "pnlAbs": 9549.239999999998,
-      "pnlPct": 41.682064068030535
+      "currentPrice": 750.45,
+      "currentValue": 33770.25,
+      "pnlAbs": 10860.54,
+      "pnlPct": 47.40583796128367
     },
     {
       "id": "STLA1_ISP",
@@ -203,10 +203,10 @@
       "refValue": 12620.0,
       "sector": "Automobile",
       "ptf": "ISP",
-      "currentPrice": 3.9725,
-      "currentValue": 9931.25,
-      "pnlAbs": -2688.75,
-      "pnlPct": -21.305467511885894
+      "currentPrice": 3.9535,
+      "currentValue": 9883.75,
+      "pnlAbs": -2736.25,
+      "pnlPct": -21.68185419968304
     },
     {
       "id": "BFF_ISP",
@@ -229,10 +229,10 @@
       "refValue": 12151.18,
       "sector": "Compagnie Aeree",
       "ptf": "ISP",
-      "currentPrice": 82.97,
-      "currentValue": 12445.5,
-      "pnlAbs": 294.3199999999997,
-      "pnlPct": 2.4221515935077886
+      "currentPrice": 80.76,
+      "currentValue": 12114.0,
+      "pnlAbs": -37.18000000000029,
+      "pnlPct": -0.3059785140208629
     },
     {
       "id": "FCT_ISP",
@@ -242,10 +242,10 @@
       "refValue": 10880.0,
       "sector": "Cantieristica Nav.",
       "ptf": "ISP",
-      "currentPrice": 11.88,
-      "currentValue": 11880.0,
-      "pnlAbs": 1000.0,
-      "pnlPct": 9.191176470588236
+      "currentPrice": 12.62,
+      "currentValue": 12620.0,
+      "pnlAbs": 1740.0,
+      "pnlPct": 15.992647058823529
     },
     {
       "id": "BA_ISP",
@@ -255,10 +255,10 @@
       "refValue": 9890.82,
       "sector": "Aerospazio / Difesa",
       "ptf": "ISP",
-      "currentPrice": 188.32,
-      "currentValue": 9416.0,
-      "pnlAbs": -474.8199999999997,
-      "pnlPct": -4.800613093757644
+      "currentPrice": 190.39,
+      "currentValue": 9519.5,
+      "pnlAbs": -371.3199999999997,
+      "pnlPct": -3.754188227063072
     },
     {
       "id": "MSFT_ISP",
@@ -268,10 +268,10 @@
       "refValue": 8526.35,
       "sector": "Software / Cloud",
       "ptf": "ISP",
-      "currentPrice": 529.76,
-      "currentValue": 13244.0,
-      "pnlAbs": 4717.65,
-      "pnlPct": 55.33024095890973
+      "currentPrice": 542.22,
+      "currentValue": 13555.5,
+      "pnlAbs": 5029.15,
+      "pnlPct": 58.983621362013054
     },
     {
       "id": "XOM_ISP",
@@ -281,10 +281,10 @@
       "refValue": 7189.14,
       "sector": "Petrolio & Gas",
       "ptf": "ISP",
-      "currentPrice": 164.05,
-      "currentValue": 9843.0,
-      "pnlAbs": 2653.8599999999997,
-      "pnlPct": 36.914846560228334
+      "currentPrice": 171.99,
+      "currentValue": 10319.400000000001,
+      "pnlAbs": 3130.260000000001,
+      "pnlPct": 43.54150844189988
     },
     {
       "id": "NU_ISP",
@@ -294,10 +294,10 @@
       "refValue": 5943.49,
       "sector": "Fintech",
       "ptf": "ISP",
-      "currentPrice": 15.58,
-      "currentValue": 7790.0,
-      "pnlAbs": 1846.5100000000002,
-      "pnlPct": 31.067773311640135
+      "currentPrice": 16.085,
+      "currentValue": 8042.5,
+      "pnlAbs": 2099.01,
+      "pnlPct": 35.31611898059895
     },
     {
       "id": "CPRI_ISP",
@@ -307,10 +307,10 @@
       "refValue": 4139.92,
       "sector": "Moda / Lusso",
       "ptf": "ISP",
-      "currentPrice": 14.44,
-      "currentValue": 3610.0,
-      "pnlAbs": -529.9200000000001,
-      "pnlPct": -12.800247347774837
+      "currentPrice": 15.045,
+      "currentValue": 3761.25,
+      "pnlAbs": -378.6700000000001,
+      "pnlPct": -9.146795107151831
     },
     {
       "id": "DHER_ISP",
@@ -320,10 +320,10 @@
       "refValue": 3607.0,
       "sector": "Food Delivery Tech",
       "ptf": "ISP",
-      "currentPrice": 36.45,
-      "currentValue": 3645.0000000000005,
-      "pnlAbs": 38.000000000000455,
-      "pnlPct": 1.0535070695869269
+      "currentPrice": 36.88,
+      "currentValue": 3688.0000000000005,
+      "pnlAbs": 81.00000000000045,
+      "pnlPct": 2.2456334904352775
     },
     {
       "id": "ABNB_ISP",
@@ -333,10 +333,10 @@
       "refValue": 3251.89,
       "sector": "Hospitality Tech",
       "ptf": "ISP",
-      "currentPrice": 160.63,
-      "currentValue": 4015.75,
-      "pnlAbs": 763.8600000000001,
-      "pnlPct": 23.489724437173464
+      "currentPrice": 163.985,
+      "currentValue": 4099.625,
+      "pnlAbs": 847.7350000000001,
+      "pnlPct": 26.068993723649942
     },
     {
       "id": "STLA2_ISP",
@@ -346,10 +346,10 @@
       "refValue": 2060.13,
       "sector": "Automobile",
       "ptf": "ISP",
-      "currentPrice": 3.9725,
-      "currentValue": 1624.7525,
-      "pnlAbs": -435.37750000000005,
-      "pnlPct": -21.133496429836953
+      "currentPrice": 3.9535,
+      "currentValue": 1616.9815,
+      "pnlAbs": -443.1485,
+      "pnlPct": -21.51070563508128
     },
     {
       "id": "CNHI_ISP",
@@ -372,10 +372,10 @@
       "refValue": 1208.72,
       "sector": "Sport / Intrattenimento",
       "ptf": "ISP",
-      "currentPrice": 1.736,
-      "currentValue": 1006.88,
-      "pnlAbs": -201.84000000000003,
-      "pnlPct": -16.69865642994242
+      "currentPrice": 1.748,
+      "currentValue": 1013.84,
+      "pnlAbs": -194.88,
+      "pnlPct": -16.122840690978887
     },
     {
       "id": "IVG_ISP",
@@ -385,10 +385,10 @@
       "refValue": 530.1,
       "sector": "Veicoli Commerciali",
       "ptf": "ISP",
-      "currentPrice": 14.275,
-      "currentValue": 542.45,
-      "pnlAbs": 12.350000000000023,
-      "pnlPct": 2.3297491039426568
+      "currentPrice": 14.34,
+      "currentValue": 544.92,
+      "pnlAbs": 14.819999999999936,
+      "pnlPct": 2.7956989247311705
     },
     {
       "id": "RCS_ISP",
@@ -398,10 +398,10 @@
       "refValue": 159.2,
       "sector": "Media",
       "ptf": "ISP",
-      "currentPrice": 0.832,
-      "currentValue": 140.608,
-      "pnlAbs": -18.591999999999985,
-      "pnlPct": -11.678391959798986
+      "currentPrice": 0.84,
+      "currentValue": 141.96,
+      "pnlAbs": -17.23999999999998,
+      "pnlPct": -10.829145728643205
     },
     {
       "id": "FRVIA_ISP",
@@ -411,10 +411,10 @@
       "refValue": 53.64,
       "sector": "Componenti Automotive",
       "ptf": "ISP",
-      "currentPrice": 8.91,
-      "currentValue": 53.46,
-      "pnlAbs": -0.17999999999999972,
-      "pnlPct": -0.3355704697986572
+      "currentPrice": 8.576,
+      "currentValue": 51.456,
+      "pnlAbs": -2.1839999999999975,
+      "pnlPct": -4.071588366890375
     },
     {
       "id": "P911_UCG",
@@ -424,10 +424,10 @@
       "refValue": 11637.5,
       "sector": "Luxury Vehicles",
       "ptf": "UCG",
-      "currentPrice": 42.27,
-      "currentValue": 10567.5,
-      "pnlAbs": -1070.0,
-      "pnlPct": -9.194414607948442
+      "currentPrice": 42.02,
+      "currentValue": 10505.0,
+      "pnlAbs": -1132.5,
+      "pnlPct": -9.731471535982813
     },
     {
       "id": "FRVIA_UCG",
@@ -437,10 +437,10 @@
       "refValue": 302.8,
       "sector": "Componenti Automotive",
       "ptf": "UCG",
-      "currentPrice": 8.91,
-      "currentValue": 302.94,
-      "pnlAbs": 0.13999999999998636,
-      "pnlPct": 0.046235138705411606
+      "currentPrice": 8.576,
+      "currentValue": 291.584,
+      "pnlAbs": -11.216000000000008,
+      "pnlPct": -3.70409511228534
     },
     {
       "id": "MB_UCG",
@@ -450,10 +450,10 @@
       "refValue": 53200.0,
       "sector": "Bancario / Invest.",
       "ptf": "UCG",
-      "currentPrice": 24.52,
-      "currentValue": 49040.0,
-      "pnlAbs": -4160.0,
-      "pnlPct": -7.819548872180452
+      "currentPrice": 25.36,
+      "currentValue": 50720.0,
+      "pnlAbs": -2480.0,
+      "pnlPct": -4.661654135338346
     },
     {
       "id": "ISP_UCG",
@@ -463,10 +463,10 @@
       "refValue": 27589.5,
       "sector": "Bancario / Retail",
       "ptf": "UCG",
-      "currentPrice": 6.12,
-      "currentValue": 27540.0,
-      "pnlAbs": -49.5,
-      "pnlPct": -0.17941608220518676
+      "currentPrice": 6.167,
+      "currentValue": 27751.5,
+      "pnlAbs": 162.0,
+      "pnlPct": 0.5871799053987931
     },
     {
       "id": "IRE_UCG",
@@ -476,10 +476,10 @@
       "refValue": 8320.0,
       "sector": "Utility Multi-Servizi",
       "ptf": "UCG",
-      "currentPrice": 2.41,
-      "currentValue": 7832.500000000001,
-      "pnlAbs": -487.4999999999991,
-      "pnlPct": -5.859374999999989
+      "currentPrice": 2.412,
+      "currentValue": 7839.0,
+      "pnlAbs": -481.0,
+      "pnlPct": -5.78125
     },
     {
       "id": "ENI_UCG",
@@ -489,10 +489,10 @@
       "refValue": 32568.0,
       "sector": "Petrolio & Gas",
       "ptf": "UCG",
-      "currentPrice": 24.865,
-      "currentValue": 39784.0,
-      "pnlAbs": 7216.0,
-      "pnlPct": 22.15671825104397
+      "currentPrice": 25.44,
+      "currentValue": 40704.0,
+      "pnlAbs": 8136.0,
+      "pnlPct": 24.981577008106118
     },
     {
       "id": "IF_UCG",
@@ -502,10 +502,10 @@
       "refValue": 11775.63,
       "sector": "Bancario / Factoring",
       "ptf": "UCG",
-      "currentPrice": 10.75,
-      "currentValue": 9126.75,
-      "pnlAbs": -2648.879999999999,
-      "pnlPct": -22.494592645998555
+      "currentPrice": 10.22,
+      "currentValue": 8676.78,
+      "pnlAbs": -3098.8499999999985,
+      "pnlPct": -26.315789473684198
     },
     {
       "id": "UCG_UCG",
@@ -515,10 +515,10 @@
       "refValue": 39959.5,
       "sector": "Bancario",
       "ptf": "UCG",
-      "currentPrice": 76.23,
-      "currentValue": 37352.700000000004,
-      "pnlAbs": -2606.7999999999956,
-      "pnlPct": -6.523605150214581
+      "currentPrice": 76.06,
+      "currentValue": 37269.4,
+      "pnlAbs": -2690.0999999999985,
+      "pnlPct": -6.732066217044755
     },
     {
       "id": "BFF_UCG",
@@ -541,10 +541,10 @@
       "refValue": 43660.0,
       "sector": "Oil & Gas Services",
       "ptf": "UCG",
-      "currentPrice": 4.438,
-      "currentValue": 44380.0,
-      "pnlAbs": 720.0,
-      "pnlPct": 1.6491067338524967
+      "currentPrice": 4.643,
+      "currentValue": 46430.0,
+      "pnlAbs": 2770.0,
+      "pnlPct": 6.344480073293633
     },
     {
       "id": "BMPS_UCG",
@@ -554,10 +554,10 @@
       "refValue": 354.56,
       "sector": "Bancario",
       "ptf": "UCG",
-      "currentPrice": 10.938,
-      "currentValue": 350.016,
-      "pnlAbs": -4.543999999999983,
-      "pnlPct": -1.2815884476534247
+      "currentPrice": 11.118,
+      "currentValue": 355.776,
+      "pnlAbs": 1.2160000000000082,
+      "pnlPct": 0.3429602888086666
     },
     {
       "id": "JUVE_UCG",
@@ -567,10 +567,10 @@
       "refValue": 1042.0,
       "sector": "Sport / Intrattenimento",
       "ptf": "UCG",
-      "currentPrice": 1.736,
-      "currentValue": 868.0,
-      "pnlAbs": -174.0,
-      "pnlPct": -16.698656429942417
+      "currentPrice": 1.748,
+      "currentValue": 874.0,
+      "pnlAbs": -168.0,
+      "pnlPct": -16.122840690978887
     },
     {
       "id": "AIR_UCG",
@@ -580,10 +580,10 @@
       "refValue": 8220.0,
       "sector": "Aerospazio / Difesa",
       "ptf": "UCG",
-      "currentPrice": 187.1,
-      "currentValue": 7484.0,
-      "pnlAbs": -736.0,
-      "pnlPct": -8.953771289537713
+      "currentPrice": 188.16,
+      "currentValue": 7526.4,
+      "pnlAbs": -693.6000000000004,
+      "pnlPct": -8.437956204379567
     },
     {
       "id": "STLA_UCG",
@@ -593,10 +593,10 @@
       "refValue": 10058.0,
       "sector": "Automobile",
       "ptf": "UCG",
-      "currentPrice": 3.9725,
-      "currentValue": 7945.0,
-      "pnlAbs": -2113.0,
-      "pnlPct": -21.008152714257307
+      "currentPrice": 3.9535,
+      "currentValue": 7907.0,
+      "pnlAbs": -2151.0,
+      "pnlPct": -21.385961423742295
     },
     {
       "id": "BRE_UCG",
@@ -606,20 +606,20 @@
       "refValue": 10610.0,
       "sector": "Componenti Automotive",
       "ptf": "UCG",
-      "currentPrice": 9.96,
-      "currentValue": 9960.0,
-      "pnlAbs": -650.0,
-      "pnlPct": -6.126295947219605
+      "currentPrice": 9.965,
+      "currentValue": 9965.0,
+      "pnlAbs": -645.0,
+      "pnlPct": -6.079170593779453
     }
   ],
   "summary": {
     "ispRefEquity": 965611.79,
-    "ispCurEquity": 1046550.3,
+    "ispCurEquity": 1049662.46,
     "ucgRefEquity": 273211.49,
-    "ucgCurEquity": 261551.41,
+    "ucgCurEquity": 265833.44,
     "totalRefEquity": 1238823.28,
-    "totalCurEquity": 1308101.71,
-    "pnlEquity": 69278.43,
+    "totalCurEquity": 1315495.9,
+    "pnlEquity": 76672.62,
     "ispNonEquity": 64571.47,
     "ucgNonEquity": 181934.79,
     "ispCash": 2633.63,
