@@ -1,0 +1,40 @@
+{
+  "agent": "quality",
+  "date": "2026-11-19",
+  "timestamp": "2026-11-19T15:10:32.048128",
+  "stats": {
+    "total_candidates": 0,
+    "total_etf": 3
+  },
+  "top_stocks": [],
+  "top_etf": [
+    {
+      "ticker": "VWCE.DE",
+      "name": "Vanguard FTSE All-World UCITS ETF USD Accumulation",
+      "category": "N/A",
+      "total_assets": 88843730944.0,
+      "expense_ratio": null,
+      "return_1y": 0.17880886904941784,
+      "score": 1.2
+    },
+    {
+      "ticker": "VEUR.AS",
+      "name": "Vanguard FTSE Developed Europe UCITS ETF",
+      "category": "N/A",
+      "total_assets": 8076131840.0,
+      "expense_ratio": null,
+      "return_1y": 0.17892570555378126,
+      "score": 1.2
+    },
+    {
+      "ticker": "IEMA.AS",
+      "name": "iShares MSCI EM UCITS ETF USD (Acc)",
+      "category": "N/A",
+      "total_assets": 9952594944.0,
+      "expense_ratio": null,
+      "return_1y": 0.15926183129807484,
+      "score": 1.2
+    }
+  ],
+  "report_text": "═══════════════════════════════════════════════════\n🟡 QUALITY AGENT | 19 November 2026\n═══════════════════════════════════════════════════\n\n📊 EXECUTIVE SUMMARY\n\nIl panorama di novembre 2026 mostra mercati europei in ripresa solida (+17-18% annuo su indici sviluppati), con performance particolarmente interessanti sui segmenti small cap USA (+22-30%). L'assenza di candidati azionari dallo screening quantitativo questa settimana riflette valutazioni tese sui titoli quality: molte aziende strutturalmente solide sono ora prezzate oltre parametri GARP ragionevoli. In questo contesto, la strategia si orienta verso veicoli diversificati ad alta efficienza, privilegiando esposizioni ampie e fattoriali che mantengano qualità intrinseca senza pagare premi eccessivi.\n\nCandidati analizzati: 0 azioni + 10 ETF → Proposte finali: 3 ETF\n\n───────────────────────────────────────────────────\n📈 TOP PICKS — AZIONI\n───────────────────────────────────────────────────\n\nNessuna azione ha superato i criteri quality/GARP questa settimana.\n\nIl filtro quantitativo non ha identificato titoli individuali che combinino metriche quality superiori (ROE >15%, margini stabili, bilancio solido) con valutazioni ragionevoli. Questo riflette un mercato maturo dove le aziende di qualità evidenziata sono già riconosciute e prezzate dal consensus.\n\n───────────────────────────────────────────────────\n🧩 TOP PICKS — ETF\n───────────────────────────────────────────────────\n\n1. VWCE.DE — Vanguard FTSE All-World UCITS ETF USD Accumulation\n   Categoria: Azionario Globale | Exchange: GER\n   AUM: €88.8B | TER: n.d. | Rendimento 1Y: +17.9%\n   \n   Analisi: Soluzione core ideale per strategie quality/GARP: oltre 3.900 titoli\n   tra mercati sviluppati ed emergenti, con naturale bias verso aziende large/mid cap\n   di qualità. L'accumulo dei dividendi ottimizza l'efficienza fiscale su orizzonti\n   pluriennali. L'AUM imponente garantisce liquidità eccellente e spread contenuti.\n   Rappresenta l'esposizione più diversificata possibile mantenendo focus su società\n   quotate strutturalmente solide.\n   \n   ⚠️ Rischi: Esposizione valutaria USD (~60% portafoglio), nessuna protezione da fasi ribassiste.\n   \n   Giudizio: FORTE INTERESSE ⭐⭐⭐\n\n2. IUSN.DE — iShares MSCI World Small Cap UCITS ETF USD (Acc)\n   Categoria: Small Cap Globali | Exchange: GER\n   AUM: €9.0B | TER: n.d. | Rendimento 1Y: +22.3%\n   \n   Analisi: Complemento tattico eccellente per catturare il premio small cap con focus\n   quality: le small cap globali storicamente sovraperformano su cicli lunghi, specie\n   quando filtrate per solidità (implicita nella selezione MSCI). Il rendimento annuo\n   superiore al mercato largo conferma la fase favorevole. Adatto come satellite (15-20%\n   portafoglio) per investitori con orizzonte 24-36 mesi e tolleranza a volatilità maggiore.\n   \n   ⚠️ Rischi: Volatilità +30% superiore ai large cap, liquidità inferiore in stress market.\n   \n   Giudizio: INTERESSANTE ⭐⭐\n\n3. ZPRV.DE — SPDR MSCI USA Small Cap Value Weighted UCITS ETF USD Acc\n   Categoria: Small Cap Value USA | Exchange: GER\n   AUM: €1.0B | TER: n.d. | Rendimento 1Y: +30.0%\n   \n   Analisi: Performance eccezionale che combina due fattori storicamente premianti: small cap\n   e value con weighting quality-adjusted. Il +30% annuo indica forte momentum su società\n   americane sottovalutate di piccola capitalizzazione. AUM più contenuto richiede attenzione\n   agli spread, ma rappresenta opportunità tattica per chi cerca esposizione concentrata USA\n   con valutazioni ragionevoli su fondamentali solidi.\n   \n   ⚠️ Rischi: AUM limitato vs peers, concentrazione geografica/stilistica elevata, alta volatilità.\n   \n   Giudizio: INTERESSANTE ⭐⭐\n\n───────────────────────────────────────────────────\n👁 WATCHLIST — Da monitorare\n───────────────────────────────────────────────────\n\n• **EXSA.DE** (iShares STOXX Europe 600) — AUM €10.6B, +17.6% annuo. Ottima esposizione Europa allargata con liquidità eccellente, ma attualmente distribuisce dividendi (meno efficiente fiscalmente vs accumulo). Da preferire in fase di rotazione verso Europa.\n\n• **VEUR.AS** (Vanguard FTSE Developed Europe) — Performance allineata (+17.9%) con costi Vanguard tipicamente contenuti. Duplica parzialmente EXSA; valutare se già esposti a Europa core.\n\n• **IEMA.AS** (iShares MSCI EM) — Emergenti +15.9%, sotto-performance vs sviluppati segnala cautela. Metriche quality medie inferiori; attendere miglioramento momentum relativo.\n\n• **EXS1.DE / DBXD.DE** (DAX) — Solo +10.4-10.5%, sotto-performance Germania riflette sfide strutturali. Evitare concentrazione geografica su mercato debole.\n\n• **XDEM.DE** (World Momentum) — Fattore momentum +15.4% interessante ma sotto mercato largo. Monitorare rotazione fattoriale prima di implementare.\n\n───────────────────────────────────────────────────\n⭐ CONVERGENZA INTER-AGENTE\n───────────────────────────────────────────────────\n\nI seguenti asset appaiono anche nei report degli altri agenti questa settimana,\nsegnale di interesse multiplo:\n**IT, HPQ, BBWI, CHRD, PARR, AMAT, ANET, AVGO, KDP, LRCX**\n\nLa convergenza su semiconduttori (AMAT, ANET, AVGO, LRCX) e tech (IT) conferma che la qualità riconosciuta si concentra su settori ad alto ROIC strutturale. L'assenza di questi titoli dal nostro screening quality/GARP suggerisce che, pur essendo aziende eccellenti, le valutazioni correnti incorporano già pienamente le prospettive. Per un quality investor disciplinato, meglio attendere correzioni o preferire esposizione diversificata via ETF che includano questi nomi a peso di mercato, evitando di pagare premium eccessivi su singoli titoli.\n\n───────────────────────────────────────────────────"
+}
